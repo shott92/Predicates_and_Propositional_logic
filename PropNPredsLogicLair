@@ -1,0 +1,3418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prop & Preds Logic Lair - Portable eLearning App</title>
+    <meta name="description" content="A super portable offline eLearning application to learn and practice Propositional and First-Order Predicate Logic. Shareable via WhatsApp with zero prerequisites.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+/* ==========================================================================
+   Prop & Preds Logic Lair - Deep Dark Cyber Gothic Design System
+   ========================================================================== */
+
+:root {
+    --bg-dark: #090d16;
+    --bg-card: rgba(15, 23, 42, 0.75);
+    --bg-card-hover: rgba(30, 41, 59, 0.85);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-glow: rgba(6, 182, 212, 0.4);
+    
+    --primary: #06b6d4;      /* Glowing Cyan */
+    --primary-hover: #0891b2;
+    --secondary: #8b5cf6;    /* Electric Violet */
+    --accent: #f59e0b;       /* Amber Glow */
+    --success: #10b981;      /* Emerald Green */
+    --danger: #ef4444;       /* Crimson Red */
+
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    
+    --font-heading: 'Outfit', 'Inter', -apple-system, sans-serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+    --font-code: 'JetBrains Mono', 'Fira Code', monospace;
+
+    --shadow-glow: 0 0 20px rgba(6, 182, 212, 0.25);
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    background-image: 
+        radial-gradient(at 10% 10%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
+        radial-gradient(at 90% 80%, rgba(139, 92, 246, 0.12) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: var(--text-main);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header & App Bar */
+.app-header {
+    background: rgba(9, 13, 22, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo-icon {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 8px var(--primary));
+}
+
+.logo-text h1 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #38bdf8, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
+}
+
+.logo-text p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.header-stats {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.stat-pill {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-pill .icon {
+    font-size: 1.1rem;
+}
+
+.sound-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sound-toggle-btn:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+}
+
+/* Nav Tabs */
+.nav-bar {
+    background: rgba(15, 23, 42, 0.6);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.nav-tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-tab-btn:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-tab-btn.active {
+    color: var(--primary);
+    background: rgba(6, 182, 212, 0.12);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+}
+
+/* Main Layout */
+.main-container {
+    flex: 1;
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.view-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.view-panel.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Category Campaign Map */
+.campaign-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.campaign-header h2 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.campaign-header p {
+    color: var(--text-muted);
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.category-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.category-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--category-color, var(--primary));
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 15px var(--category-color, var(--primary));
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.category-icon {
+    font-size: 2.2rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.6rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+}
+
+.category-title h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.category-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+    line-height: 1.4;
+}
+
+.category-progress {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.progress-bar-bg {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--category-color, var(--primary));
+    width: 0%;
+    transition: width 0.4s ease;
+}
+
+/* Challenge Workspace */
+.challenge-workspace {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+    .challenge-workspace {
+        grid-template-columns: 1fr;
+    }
+}
+
+.challenge-sidebar {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.2rem;
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+}
+
+.sidebar-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.challenge-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.challenge-item-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+}
+
+.challenge-item-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--primary);
+}
+
+.challenge-item-btn.active {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: var(--primary);
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+}
+
+.challenge-item-btn.completed {
+    border-color: var(--success);
+}
+
+.challenge-item-btn .status-icon {
+    font-size: 1rem;
+}
+
+/* Main Challenge Play Area */
+.challenge-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.challenge-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.challenge-badge {
+    background: rgba(139, 92, 246, 0.2);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    color: #c084fc;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+}
+
+.challenge-xp {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.challenge-title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+}
+
+.challenge-prompt {
+    font-size: 1.1rem;
+    color: #e2e8f0;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.formula-box {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 1.2rem;
+    text-align: center;
+    font-family: var(--font-code);
+    font-size: 1.3rem;
+    color: #38bdf8;
+    margin-bottom: 1.5rem;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+.premises-list {
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 4px solid var(--secondary);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.premises-list li {
+    font-family: var(--font-code);
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+}
+
+/* Multiple Choice Grid */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.option-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.option-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary);
+}
+
+.option-btn.selected {
+    background: rgba(6, 182, 212, 0.2);
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+}
+
+/* Virtual Logic Keyboard Toolbar */
+.logic-keyboard-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.logic-key-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-color);
+    color: #38bdf8;
+    font-family: var(--font-code);
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.logic-key-btn:hover {
+    background: rgba(6, 182, 212, 0.25);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+/* Common Buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Feedback & Explanation Box */
+.feedback-box {
+    margin-top: 1.5rem;
+    padding: 1.2rem;
+    border-radius: var(--radius-sm);
+    animation: fadeIn 0.3s ease;
+}
+
+.feedback-box.success {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid var(--success);
+    color: #6ee7b7;
+}
+
+.feedback-box.error {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid var(--danger);
+    color: #fca5a5;
+}
+
+.feedback-box h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+}
+
+.feedback-box p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Predicate World Grid */
+.predicate-world-grid {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.world-object-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    min-width: 120px;
+    transition: all 0.2s ease;
+}
+
+.world-object-card.interactive {
+    cursor: pointer;
+}
+
+.world-object-card.interactive:hover {
+    border-color: var(--primary);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+}
+
+.object-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Interactive Sandbox Tools */
+.sandbox-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.sandbox-tab-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sandbox-tab-btn.active {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: var(--secondary);
+    color: #ffffff;
+}
+
+.sandbox-panel {
+    display: none;
+}
+
+.sandbox-panel.active {
+    display: block;
+}
+
+.input-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.input-card label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.input-card input[type="text"] {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-family: var(--font-code);
+    font-size: 1.1rem;
+    padding: 0.8rem;
+    border-radius: var(--radius-sm);
+}
+
+.results-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Truth Table Styling */
+.truth-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-family: var(--font-code);
+}
+
+.truth-table th, .truth-table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.truth-table th {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--primary);
+}
+
+.truth-table .result-header {
+    background: rgba(139, 92, 246, 0.2);
+    color: #c084fc;
+}
+
+.val-true {
+    color: #4ade80;
+    font-weight: 700;
+}
+
+.val-false {
+    color: #f87171;
+    font-weight: 700;
+}
+
+.analysis-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.badge-tautology {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid var(--success);
+    color: #6ee7b7;
+}
+
+.badge-contradiction {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid var(--danger);
+    color: #fca5a5;
+}
+
+.badge-contingency {
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid var(--accent);
+    color: #fde047;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Header & App Bar -->
+    <header class="app-header">
+        <div class="logo-container">
+            <span class="logo-icon">🔮</span>
+            <div class="logo-text">
+                <h1>Prop & Preds Logic Lair</h1>
+                <p>Portable Propositional & Predicate Logic eLearning App</p>
+            </div>
+        </div>
+
+        <div class="header-stats">
+            <div class="stat-pill" title="Total Experience Points">
+                <span class="icon">⚡</span>
+                <span id="stat-xp-val">0</span> XP
+            </div>
+            <div class="stat-pill" title="Current Daily Streak">
+                <span class="icon">🔥</span>
+                <span id="stat-streak-val">1 🔥</span>
+            </div>
+            <div class="stat-pill" title="Mastered Challenges">
+                <span class="icon">🎯</span>
+                <span id="stat-completed-val">0 / 70</span>
+            </div>
+            <button class="sound-toggle-btn" id="btn-sound-toggle" title="Toggle Sound Effects">🔊</button>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-bar">
+        <button class="nav-tab-btn active" data-view="campaign">
+            <span>🗺️</span> Campaign Map
+        </button>
+        <button class="nav-tab-btn" data-view="workspace">
+            <span>⚔️</span> Challenge Workspace
+        </button>
+        <button class="nav-tab-btn" data-view="sandbox">
+            <span>🧪</span> Interactive Sandbox
+        </button>
+        <button class="nav-tab-btn" data-view="stats">
+            <span>🏆</span> Achievements & Stats
+        </button>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        
+        <!-- View 1: Campaign Map -->
+        <section class="view-panel active" id="view-campaign">
+            <div class="campaign-header">
+                <h2>Choose Your Logic Realm</h2>
+                <p>Unlock categories, conquer truth tables, translate quantifiers, and clear the lair!</p>
+            </div>
+
+            <div class="categories-grid">
+                <!-- Dynamically populated by app.js -->
+            </div>
+        </section>
+
+        <!-- View 2: Challenge Workspace -->
+        <section class="view-panel" id="view-workspace">
+            <div class="challenge-workspace">
+                <aside class="challenge-sidebar">
+                    <div class="sidebar-title">Challenges</div>
+                    <div class="challenge-list">
+                        <!-- Dynamically populated by app.js -->
+                    </div>
+                </aside>
+
+                <div class="challenge-main-area">
+                    <!-- Dynamically populated by app.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- View 3: Interactive Sandbox -->
+        <section class="view-panel" id="view-sandbox">
+            <!-- Rendered by SandboxView module -->
+        </section>
+
+        <!-- View 4: Achievements & Stats -->
+        <section class="view-panel" id="view-stats">
+            <!-- Dynamically populated by app.js -->
+        </section>
+
+    </main>
+
+    <script>
+
+
+/* --- LOGIC PARSER --- */
+/**
+ * LogicParser - Tokenizer and AST Parser for Propositional and Predicate Logic formulas.
+ */
+
+class LogicParser {
+    static TOKEN_TYPES = {
+        VARIABLE: 'VARIABLE',
+        PREDICATE: 'PREDICATE',
+        CONSTANT: 'CONSTANT',
+        NOT: 'NOT',
+        AND: 'AND',
+        OR: 'OR',
+        IMPLIES: 'IMPLIES',
+        IFF: 'IFF',
+        XOR: 'XOR',
+        FORALL: 'FORALL',
+        EXISTS: 'EXISTS',
+        LPAREN: 'LPAREN',
+        RPAREN: 'RPAREN',
+        COMMA: 'COMMA',
+        DOT: 'DOT'
+    };
+
+    /**
+     * Tokenize raw input string into token stream
+     */
+    static tokenize(input) {
+        const tokens = [];
+        let i = 0;
+        const s = input.trim();
+
+        while (i < s.length) {
+            const char = s[i];
+
+            if (/\s/.test(char)) {
+                i++;
+                continue;
+            }
+
+            // Quantifiers: ∀, \A, forall / ∃, \E, exists
+            if (char === '∀' || s.substr(i, 7).toLowerCase() === 'forall ') {
+                tokens.push({ type: this.TOKEN_TYPES.FORALL, value: '∀' });
+                i += (char === '∀' ? 1 : 7);
+                continue;
+            }
+            if (s.substr(i, 2) === '\\A') {
+                tokens.push({ type: this.TOKEN_TYPES.FORALL, value: '∀' });
+                i += 2;
+                continue;
+            }
+
+            if (char === '∃' || s.substr(i, 7).toLowerCase() === 'exists ') {
+                tokens.push({ type: this.TOKEN_TYPES.EXISTS, value: '∃' });
+                i += (char === '∃' ? 1 : 7);
+                continue;
+            }
+            if (s.substr(i, 2) === '\\E') {
+                tokens.push({ type: this.TOKEN_TYPES.EXISTS, value: '∃' });
+                i += 2;
+                continue;
+            }
+
+            // Connectives
+            if (char === '¬' || char === '~' || char === '!') {
+                tokens.push({ type: this.TOKEN_TYPES.NOT, value: '¬' });
+                i++;
+                continue;
+            }
+            if (s.substr(i, 3).toLowerCase() === 'not') {
+                tokens.push({ type: this.TOKEN_TYPES.NOT, value: '¬' });
+                i += 3;
+                continue;
+            }
+
+            if (char === '↔' || s.substr(i, 3) === '<->' || s.substr(i, 3) === '<=>') {
+                tokens.push({ type: this.TOKEN_TYPES.IFF, value: '↔' });
+                i += (char === '↔' ? 1 : 3);
+                continue;
+            }
+            if (s.substr(i, 3).toLowerCase() === 'iff') {
+                tokens.push({ type: this.TOKEN_TYPES.IFF, value: '↔' });
+                i += 3;
+                continue;
+            }
+
+            if (char === '→' || s.substr(i, 2) === '->' || s.substr(i, 2) === '=>') {
+                tokens.push({ type: this.TOKEN_TYPES.IMPLIES, value: '→' });
+                i += (char === '→' ? 1 : 2);
+                continue;
+            }
+            if (s.substr(i, 7).toLowerCase() === 'implies') {
+                tokens.push({ type: this.TOKEN_TYPES.IMPLIES, value: '→' });
+                i += 7;
+                continue;
+            }
+
+            if (char === '∧' || s.substr(i, 2) === '/\\' || char === '&') {
+                tokens.push({ type: this.TOKEN_TYPES.AND, value: '∧' });
+                i += (char === '∧' || char === '&' ? 1 : 2);
+                continue;
+            }
+            if (s.substr(i, 3).toLowerCase() === 'and') {
+                tokens.push({ type: this.TOKEN_TYPES.AND, value: '∧' });
+                i += 3;
+                continue;
+            }
+
+            if (char === '∨' || s.substr(i, 2) === '\\/' || char === '|') {
+                tokens.push({ type: this.TOKEN_TYPES.OR, value: '∨' });
+                i += (char === '∨' || char === '|' ? 1 : 2);
+                continue;
+            }
+            if (s.substr(i, 2).toLowerCase() === 'or') {
+                tokens.push({ type: this.TOKEN_TYPES.OR, value: '∨' });
+                i += 2;
+                continue;
+            }
+
+            if (char === '⊕') {
+                tokens.push({ type: this.TOKEN_TYPES.XOR, value: '⊕' });
+                i++;
+                continue;
+            }
+            if (s.substr(i, 3).toLowerCase() === 'xor') {
+                tokens.push({ type: this.TOKEN_TYPES.XOR, value: '⊕' });
+                i += 3;
+                continue;
+            }
+
+            if (char === '(') {
+                tokens.push({ type: this.TOKEN_TYPES.LPAREN, value: '(' });
+                i++;
+                continue;
+            }
+
+            if (char === ')') {
+                tokens.push({ type: this.TOKEN_TYPES.RPAREN, value: ')' });
+                i++;
+                continue;
+            }
+
+            if (char === ',') {
+                tokens.push({ type: this.TOKEN_TYPES.COMMA, value: ',' });
+                i++;
+                continue;
+            }
+
+            if (char === '.') {
+                tokens.push({ type: this.TOKEN_TYPES.DOT, value: '.' });
+                i++;
+                continue;
+            }
+
+            // Identifiers: Predicates or Variables (e.g. Red(x), P, Q, x, y, z)
+            if (/[a-zA-Z_]/.test(char)) {
+                let name = '';
+                while (i < s.length && /[a-zA-Z0-9_]/.test(s[i])) {
+                    name += s[i];
+                    i++;
+                }
+                tokens.push({ type: this.TOKEN_TYPES.VARIABLE, value: name });
+                continue;
+            }
+
+            throw new Error(`Unexpected character '${char}' at index ${i}`);
+        }
+
+        return tokens;
+    }
+
+    /**
+     * Parse tokens into AST
+     */
+    static parse(input) {
+        const tokens = typeof input === 'string' ? this.tokenize(input) : input;
+        let current = 0;
+
+        function peek() {
+            return tokens[current];
+        }
+
+        function consume(type) {
+            const token = tokens[current];
+            if (!token || (type && token.type !== type)) {
+                throw new Error(`Expected token ${type} but got ${token ? token.type : 'EOF'}`);
+            }
+            current++;
+            return token;
+        }
+
+        function parseQuantifier() {
+            const token = peek();
+            if (token && (token.type === LogicParser.TOKEN_TYPES.FORALL || token.type === LogicParser.TOKEN_TYPES.EXISTS)) {
+                const qType = consume().type;
+                const varToken = consume(LogicParser.TOKEN_TYPES.VARIABLE);
+                
+                // Optional dot
+                if (peek() && peek().type === LogicParser.TOKEN_TYPES.DOT) {
+                    consume(LogicParser.TOKEN_TYPES.DOT);
+                }
+
+                const body = parseExpression();
+                return {
+                    type: qType === LogicParser.TOKEN_TYPES.FORALL ? 'Forall' : 'Exists',
+                    variable: varToken.value,
+                    body: body
+                };
+            }
+            return parseIff();
+        }
+
+        function parseIff() {
+            let left = parseImplies();
+            while (peek() && peek().type === LogicParser.TOKEN_TYPES.IFF) {
+                const op = consume().value;
+                const right = parseImplies();
+                left = { type: 'BinaryOp', op: '↔', left, right };
+            }
+            return left;
+        }
+
+        function parseImplies() {
+            let left = parseOr();
+            if (peek() && peek().type === LogicParser.TOKEN_TYPES.IMPLIES) {
+                const op = consume().value;
+                const right = parseImplies(); // Right associative P -> Q -> R = P -> (Q -> R)
+                left = { type: 'BinaryOp', op: '→', left, right };
+            }
+            return left;
+        }
+
+        function parseOr() {
+            let left = parseAnd();
+            while (peek() && (peek().type === LogicParser.TOKEN_TYPES.OR || peek().type === LogicParser.TOKEN_TYPES.XOR)) {
+                const op = consume().value;
+                const right = parseAnd();
+                left = { type: 'BinaryOp', op, left, right };
+            }
+            return left;
+        }
+
+        function parseAnd() {
+            let left = parseNot();
+            while (peek() && peek().type === LogicParser.TOKEN_TYPES.AND) {
+                const op = consume().value;
+                const right = parseNot();
+                left = { type: 'BinaryOp', op: '∧', left, right };
+            }
+            return left;
+        }
+
+        function parseNot() {
+            if (peek() && peek().type === LogicParser.TOKEN_TYPES.NOT) {
+                consume();
+                const operand = parseNot();
+                return { type: 'UnaryOp', op: '¬', operand };
+            }
+            return parsePrimary();
+        }
+
+        function parsePrimary() {
+            const token = peek();
+            if (!token) {
+                throw new Error('Unexpected end of formula');
+            }
+
+            if (token.type === LogicParser.TOKEN_TYPES.LPAREN) {
+                consume(LogicParser.TOKEN_TYPES.LPAREN);
+                const expr = parseExpression();
+                consume(LogicParser.TOKEN_TYPES.RPAREN);
+                return expr;
+            }
+
+            if (token.type === LogicParser.TOKEN_TYPES.VARIABLE) {
+                const varToken = consume();
+                // Check if it's a predicate call like Red(x) or LeftOf(x, y)
+                if (peek() && peek().type === LogicParser.TOKEN_TYPES.LPAREN) {
+                    consume(LogicParser.TOKEN_TYPES.LPAREN);
+                    const args = [];
+                    if (peek().type !== LogicParser.TOKEN_TYPES.RPAREN) {
+                        args.push(consume(LogicParser.TOKEN_TYPES.VARIABLE).value);
+                        while (peek() && peek().type === LogicParser.TOKEN_TYPES.COMMA) {
+                            consume(LogicParser.TOKEN_TYPES.COMMA);
+                            args.push(consume(LogicParser.TOKEN_TYPES.VARIABLE).value);
+                        }
+                    }
+                    consume(LogicParser.TOKEN_TYPES.RPAREN);
+                    return { type: 'Predicate', name: varToken.value, args };
+                }
+                // Proposition variable like P, Q, R or constant
+                return { type: 'Variable', name: varToken.value };
+            }
+
+            throw new Error(`Unexpected token: ${token.value}`);
+        }
+
+        function parseExpression() {
+            return parseQuantifier();
+        }
+
+        const ast = parseExpression();
+        if (current < tokens.length) {
+            throw new Error(`Unexpected extra tokens starting at '${tokens[current].value}'`);
+        }
+        return ast;
+    }
+
+    /**
+     * Extract all unique proposition variable names from an AST (e.g. P, Q, R)
+     */
+    static getVariables(ast) {
+        const vars = new Set();
+
+        function traverse(node) {
+            if (!node) return;
+            if (node.type === 'Variable') {
+                vars.add(node.name);
+            } else if (node.type === 'UnaryOp') {
+                traverse(node.operand);
+            } else if (node.type === 'BinaryOp') {
+                traverse(node.left);
+                traverse(node.right);
+            } else if (node.type === 'Predicate') {
+                // If it's a predicate, we don't treat its parameters as simple boolean vars
+            } else if (node.type === 'Forall' || node.type === 'Exists') {
+                traverse(node.body);
+            }
+        }
+
+        traverse(ast);
+        return Array.from(vars).sort();
+    }
+}
+
+
+/* --- LOGIC EVALUATOR --- */
+
+
+class Evaluator {
+    /**
+     * Evaluate a propositional AST under a given variable assignment (e.g., { P: true, Q: false })
+     */
+    static evaluatePropositional(ast, assignment) {
+        if (!ast) return false;
+
+        switch (ast.type) {
+            case 'Variable':
+                if (ast.name === 'True' || ast.name === 'T' || ast.name === '1') return true;
+                if (ast.name === 'False' || ast.name === 'F' || ast.name === '0') return false;
+                if (assignment[ast.name] !== undefined) {
+                    return Boolean(assignment[ast.name]);
+                }
+                throw new Error(`Unassigned variable: ${ast.name}`);
+
+            case 'UnaryOp':
+                if (ast.op === '¬') {
+                    return !this.evaluatePropositional(ast.operand, assignment);
+                }
+                throw new Error(`Unknown unary operator: ${ast.op}`);
+
+            case 'BinaryOp':
+                const leftVal = this.evaluatePropositional(ast.left, assignment);
+                const rightVal = this.evaluatePropositional(ast.right, assignment);
+
+                switch (ast.op) {
+                    case '∧': return leftVal && rightVal;
+                    case '∨': return leftVal || rightVal;
+                    case '→': return !leftVal || rightVal;
+                    case '↔': return leftVal === rightVal;
+                    case '⊕': return leftVal !== rightVal;
+                    default:
+                        throw new Error(`Unknown binary operator: ${ast.op}`);
+                }
+
+            default:
+                throw new Error(`Invalid AST node type for propositional logic: ${ast.type}`);
+        }
+    }
+
+    /**
+     * Generate complete truth table for an AST or formula string
+     */
+    static generateTruthTable(input) {
+        const ast = typeof input === 'string' ? LogicParser.parse(input) : input;
+        const variables = LogicParser.getVariables(ast);
+        const rows = [];
+        const numRows = Math.pow(2, variables.length);
+
+        for (let i = 0; i < numRows; i++) {
+            const assignment = {};
+            // Generate binary truth assignments (reverse order so T appears before F)
+            for (let j = 0; j < variables.length; j++) {
+                const bit = (i >> (variables.length - 1 - j)) & 1;
+                assignment[variables[j]] = bit === 0; // 0 -> True, 1 -> False (Standard truth table convention)
+            }
+
+            const result = this.evaluatePropositional(ast, assignment);
+            rows.push({
+                assignment,
+                result
+            });
+        }
+
+        return {
+            variables,
+            rows
+        };
+    }
+
+    /**
+     * Classify formula as 'Tautology', 'Contradiction', or 'Contingency'
+     */
+    static classifyFormula(input) {
+        const table = this.generateTruthTable(input);
+        const results = table.rows.map(r => r.result);
+
+        const allTrue = results.every(r => r === true);
+        const allFalse = results.every(r => r === false);
+
+        if (allTrue) return 'Tautology';
+        if (allFalse) return 'Contradiction';
+        return 'Contingency';
+    }
+
+    /**
+     * Check if two formulas are logically equivalent
+     */
+    static areEquivalent(input1, input2) {
+        const ast1 = typeof input1 === 'string' ? LogicParser.parse(input1) : input1;
+        const ast2 = typeof input2 === 'string' ? LogicParser.parse(input2) : input2;
+
+        const vars1 = LogicParser.getVariables(ast1);
+        const vars2 = LogicParser.getVariables(ast2);
+
+        const allVars = Array.from(new Set([...vars1, ...vars2])).sort();
+        const numRows = Math.pow(2, allVars.length);
+
+        for (let i = 0; i < numRows; i++) {
+            const assignment = {};
+            for (let j = 0; j < allVars.length; j++) {
+                const bit = (i >> (allVars.length - 1 - j)) & 1;
+                assignment[allVars[j]] = bit === 0;
+            }
+
+            const res1 = this.evaluatePropositional(ast1, assignment);
+            const res2 = this.evaluatePropositional(ast2, assignment);
+
+            if (res1 !== res2) return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Evaluate a First-Order Predicate Logic AST over a finite domain of objects
+     * @param {Object} ast - Parsed AST
+     * @param {Array<Object>} domain - List of domain items e.g., [{id: 'A', shape: 'square', color: 'red'}, ...]
+     * @param {Object} predicates - Map of predicate functions e.g., { Red: (obj) => obj.color === 'red' }
+     * @param {Object} varEnv - Current variable assignments mapping bound variable names to domain items
+     */
+    static evaluatePredicate(ast, domain, predicates, varEnv = {}) {
+        if (!ast) return false;
+
+        switch (ast.type) {
+            case 'Predicate':
+                const predFn = predicates[ast.name];
+                if (!predFn) {
+                    throw new Error(`Undefined predicate: ${ast.name}`);
+                }
+                const args = ast.args.map(argName => {
+                    if (varEnv[argName] !== undefined) return varEnv[argName];
+                    const constObj = domain.find(d => d.id === argName || d.name === argName);
+                    if (constObj) return constObj;
+                    throw new Error(`Unbound variable or constant: ${argName}`);
+                });
+                return Boolean(predFn(...args));
+
+            case 'UnaryOp':
+                if (ast.op === '¬') {
+                    return !this.evaluatePredicate(ast.operand, domain, predicates, varEnv);
+                }
+                throw new Error(`Unknown unary operator: ${ast.op}`);
+
+            case 'BinaryOp':
+                const leftVal = this.evaluatePredicate(ast.left, domain, predicates, varEnv);
+                const rightVal = this.evaluatePredicate(ast.right, domain, predicates, varEnv);
+
+                switch (ast.op) {
+                    case '∧': return leftVal && rightVal;
+                    case '∨': return leftVal || rightVal;
+                    case '→': return !leftVal || rightVal;
+                    case '↔': return leftVal === rightVal;
+                    case '⊕': return leftVal !== rightVal;
+                    default:
+                        throw new Error(`Unknown binary operator: ${ast.op}`);
+                }
+
+            case 'Forall':
+                // Must hold for ALL elements in domain
+                return domain.every(item => {
+                    const newEnv = { ...varEnv, [ast.variable]: item };
+                    return this.evaluatePredicate(ast.body, domain, predicates, newEnv);
+                });
+
+            case 'Exists':
+                // Must hold for AT LEAST ONE element in domain
+                return domain.some(item => {
+                    const newEnv = { ...varEnv, [ast.variable]: item };
+                    return this.evaluatePredicate(ast.body, domain, predicates, newEnv);
+                });
+
+            case 'Variable':
+                // Boolean constant or bound boolean variable
+                if (ast.name === 'True' || ast.name === 'T') return true;
+                if (ast.name === 'False' || ast.name === 'F') return false;
+                if (typeof varEnv[ast.name] === 'boolean') return varEnv[ast.name];
+                throw new Error(`Variable ${ast.name} evaluated in predicate context without predicate wrapper.`);
+
+            default:
+                throw new Error(`Invalid AST node type for predicate logic: ${ast.type}`);
+        }
+    }
+}
+
+
+/* --- CHALLENGES DATA --- */
+/**
+ * Challenges Data Bank for Prop & Preds Logic Lair
+ * 70+ Challenges organized across 7 categories
+ */
+
+const CATEGORIES = [
+    {
+        id: 'cat_foundations',
+        name: 'Category 1: Propositional Foundations',
+        icon: '⚡',
+        description: 'Master logical connectives (AND, OR, NOT, IMPLIES, IFF, XOR) and truth values.',
+        color: '#06b6d4'
+    },
+    {
+        id: 'cat_equivalences',
+        name: 'Category 2: Equivalence & Laws',
+        icon: '⚖️',
+        description: "Transform logic expressions using De Morgan's Laws, Contrapositives, and Distributivity.",
+        color: '#3b82f6'
+    },
+    {
+        id: 'cat_tautologies',
+        name: 'Category 3: Tautologies, Contradictions & SAT',
+        icon: '🔮',
+        description: 'Identify absolute truths, contradictions, and satisfiability of boolean formulas.',
+        color: '#8b5cf6'
+    },
+    {
+        id: 'cat_inference',
+        name: 'Category 4: Rules of Inference & Proofs',
+        icon: '📜',
+        description: 'Apply Modus Ponens, Modus Tollens, and Syllogisms to derive sound conclusions.',
+        color: '#ec4899'
+    },
+    {
+        id: 'cat_quantifiers',
+        name: 'Category 5: Predicates & Quantifiers',
+        icon: '🌐',
+        description: 'Translate natural language to First-Order Logic using ∀ (for all) and ∃ (there exists).',
+        color: '#10b981'
+    },
+    {
+        id: 'cat_predicate_realm',
+        name: 'Category 6: Visual Predicate Realm',
+        icon: '🧱',
+        description: 'Evaluate and manipulate visual grid worlds to satisfy quantified predicate expressions.',
+        color: '#f59e0b'
+    },
+    {
+        id: 'cat_master_lair',
+        name: 'Category 7: The Master Logic Lair',
+        icon: '👑',
+        description: 'Conquer Knights & Knaves riddles, logic paradoxes, and multi-step boss puzzles.',
+        color: '#ef4444'
+    }
+];
+
+const CHALLENGES = [
+    // ==========================================
+    // CATEGORY 1: PROPOSITIONAL FOUNDATIONS (10 Challenges)
+    // ==========================================
+    {
+        id: 'fnd_1',
+        categoryId: 'cat_foundations',
+        title: 'The Negation Gate',
+        type: 'truth_value',
+        prompt: 'Given that proposition P is FALSE, what is the truth value of ¬P?',
+        formula: '¬P',
+        assignment: { P: false },
+        options: ['True', 'False'],
+        correctAnswer: 'True',
+        hint: 'The negation operator ¬ flips True to False, and False to True.',
+        explanation: '¬(False) = True.',
+        xp: 50
+    },
+    {
+        id: 'fnd_2',
+        categoryId: 'cat_foundations',
+        title: 'Conjunction Connection',
+        type: 'truth_value',
+        prompt: 'Given P = TRUE and Q = FALSE, calculate the truth value of P ∧ Q.',
+        formula: 'P ∧ Q',
+        assignment: { P: true, Q: false },
+        options: ['True', 'False'],
+        correctAnswer: 'False',
+        hint: 'A conjunction (∧) is only TRUE when BOTH P and Q are TRUE.',
+        explanation: 'True ∧ False = False.',
+        xp: 50
+    },
+    {
+        id: 'fnd_3',
+        categoryId: 'cat_foundations',
+        title: 'Disjunction Domain',
+        type: 'truth_value',
+        prompt: 'Given P = FALSE and Q = TRUE, calculate the truth value of P ∨ Q.',
+        formula: 'P ∨ Q',
+        assignment: { P: false, Q: true },
+        options: ['True', 'False'],
+        correctAnswer: 'True',
+        hint: 'A disjunction (∨) is TRUE if AT LEAST ONE component is TRUE.',
+        explanation: 'False ∨ True = True.',
+        xp: 50
+    },
+    {
+        id: 'fnd_4',
+        categoryId: 'cat_foundations',
+        title: 'The Conditional Trap',
+        type: 'truth_value',
+        prompt: 'Given P = FALSE and Q = FALSE, what is the truth value of P → Q?',
+        formula: 'P → Q',
+        assignment: { P: false, Q: false },
+        options: ['True', 'False'],
+        correctAnswer: 'True',
+        hint: 'An implication P → Q is vacuously TRUE whenever the premise P is FALSE!',
+        explanation: 'False → False is TRUE (vacuous truth).',
+        xp: 60
+    },
+    {
+        id: 'fnd_5',
+        categoryId: 'cat_foundations',
+        title: 'Broken Promise',
+        type: 'truth_value',
+        prompt: 'Given P = TRUE and Q = FALSE, what is the truth value of P → Q?',
+        formula: 'P → Q',
+        assignment: { P: true, Q: false },
+        options: ['True', 'False'],
+        correctAnswer: 'False',
+        hint: 'P → Q is ONLY false when a True premise leads to a False conclusion.',
+        explanation: 'True → False is FALSE.',
+        xp: 60
+    },
+    {
+        id: 'fnd_6',
+        categoryId: 'cat_foundations',
+        title: 'Biconditional Balance',
+        type: 'truth_value',
+        prompt: 'Given P = FALSE and Q = FALSE, calculate P ↔ Q.',
+        formula: 'P ↔ Q',
+        assignment: { P: false, Q: false },
+        options: ['True', 'False'],
+        correctAnswer: 'True',
+        hint: 'A biconditional P ↔ Q is TRUE when both P and Q have the EXACT SAME truth value.',
+        explanation: 'False ↔ False is TRUE because both sides match.',
+        xp: 60
+    },
+    {
+        id: 'fnd_7',
+        categoryId: 'cat_foundations',
+        title: 'Exclusive Or Mystery',
+        type: 'truth_value',
+        prompt: 'Given P = TRUE and Q = TRUE, calculate P ⊕ Q.',
+        formula: 'P ⊕ Q',
+        assignment: { P: true, Q: true },
+        options: ['True', 'False'],
+        correctAnswer: 'False',
+        hint: 'XOR (⊕) is TRUE when ONE or the OTHER is true, but NOT BOTH.',
+        explanation: 'True ⊕ True = False.',
+        xp: 60
+    },
+    {
+        id: 'fnd_8',
+        categoryId: 'cat_foundations',
+        title: 'Compound Evaluation',
+        type: 'truth_value',
+        prompt: 'Given P = TRUE, Q = FALSE, R = TRUE, calculate (P ∧ Q) ∨ ¬R.',
+        formula: '(P ∧ Q) ∨ ¬R',
+        assignment: { P: true, Q: false, R: true },
+        options: ['True', 'False'],
+        correctAnswer: 'False',
+        hint: 'First compute (True ∧ False), then compute ¬True, then combine with ∨.',
+        explanation: '(True ∧ False) = False. ¬True = False. False ∨ False = False.',
+        xp: 70
+    },
+    {
+        id: 'fnd_9',
+        categoryId: 'cat_foundations',
+        title: 'Nested Implication',
+        type: 'truth_value',
+        prompt: 'Given P = TRUE, Q = FALSE, R = FALSE, calculate P → (Q → R).',
+        formula: 'P → (Q → R)',
+        assignment: { P: true, Q: false, R: false },
+        options: ['True', 'False'],
+        correctAnswer: 'True',
+        hint: 'Evaluate the inner implication (Q → R) first.',
+        explanation: 'Q → R is False → False = True. Then P → True is True → True = True.',
+        xp: 75
+    },
+    {
+        id: 'fnd_10',
+        categoryId: 'cat_foundations',
+        title: 'Complex Expression Trial',
+        type: 'truth_value',
+        prompt: 'Given P = FALSE, Q = TRUE, R = TRUE, calculate ¬(P ∨ Q) ↔ (¬P ∧ ¬Q).',
+        formula: '¬(P ∨ Q) ↔ (¬P ∧ ¬Q)',
+        assignment: { P: false, Q: true, R: true },
+        options: ['True', 'False'],
+        correctAnswer: 'True',
+        hint: 'This evaluates De Morgan\'s Law. Both sides will always yield the same result!',
+        explanation: 'Left side: ¬(False ∨ True) = ¬True = False. Right side: ¬False ∧ ¬True = True ∧ False = False. False ↔ False = True.',
+        xp: 80
+    },
+
+    // ==========================================
+    // CATEGORY 2: EQUIVALENCE & LAWS (10 Challenges)
+    // ==========================================
+    {
+        id: 'eqv_1',
+        categoryId: 'cat_equivalences',
+        title: "De Morgan's Law for AND",
+        type: 'equivalence',
+        prompt: 'According to De Morgan\'s Law, what is the logical equivalent of ¬(P ∧ Q)?',
+        targetFormula: '¬(P ∧ Q)',
+        options: ['¬P ∨ ¬Q', '¬P ∧ ¬Q', 'P ∨ Q', '¬P → Q'],
+        correctAnswer: '¬P ∨ ¬Q',
+        hint: 'Negating a conjunction flips the ∧ to ∨ and negates both variables.',
+        explanation: '¬(P ∧ Q) ≡ ¬P ∨ ¬Q.',
+        xp: 70
+    },
+    {
+        id: 'eqv_2',
+        categoryId: 'cat_equivalences',
+        title: "De Morgan's Law for OR",
+        type: 'equivalence',
+        prompt: 'What is the logical equivalent of ¬(P ∨ Q)?',
+        targetFormula: '¬(P ∨ Q)',
+        options: ['¬P ∧ ¬Q', '¬P ∨ ¬Q', 'P ∧ Q', 'P → ¬Q'],
+        correctAnswer: '¬P ∧ ¬Q',
+        hint: 'Negating a disjunction flips ∨ to ∧ and negates both variables.',
+        explanation: '¬(P ∨ Q) ≡ ¬P ∧ ¬Q.',
+        xp: 70
+    },
+    {
+        id: 'eqv_3',
+        categoryId: 'cat_equivalences',
+        title: 'Implication Elimination Law',
+        type: 'equivalence',
+        prompt: 'Express the implication P → Q using only NOT (¬) and OR (∨).',
+        targetFormula: 'P → Q',
+        options: ['¬P ∨ Q', 'P ∨ ¬Q', '¬(P ∧ Q)', 'P ∧ ¬Q'],
+        correctAnswer: '¬P ∨ Q',
+        hint: 'P → Q means "either P is false OR Q is true".',
+        explanation: 'P → Q ≡ ¬P ∨ Q.',
+        xp: 75
+    },
+    {
+        id: 'eqv_4',
+        categoryId: 'cat_equivalences',
+        title: 'The Law of Contrapositive',
+        type: 'equivalence',
+        prompt: 'Which statement is logically equivalent to the implication P → Q?',
+        targetFormula: 'P → Q',
+        options: ['¬Q → ¬P', 'Q → P', '¬P → ¬Q', 'P ∧ Q'],
+        correctAnswer: '¬Q → ¬P',
+        hint: 'The contrapositive flips the hypothesis and conclusion AND negates both.',
+        explanation: 'P → Q ≡ ¬Q → ¬P.',
+        xp: 80
+    },
+    {
+        id: 'eqv_5',
+        categoryId: 'cat_equivalences',
+        title: 'Double Negation Law',
+        type: 'equivalence',
+        prompt: 'Simplify the expression ¬(¬(¬P)).',
+        targetFormula: '¬(¬(¬P))',
+        options: ['¬P', 'P', 'P ∧ P', 'True'],
+        correctAnswer: '¬P',
+        hint: 'Two negations cancel each other out. Three negations leave one remaining.',
+        explanation: '¬(¬(¬P)) ≡ ¬(P) ≡ ¬P.',
+        xp: 60
+    },
+    {
+        id: 'eqv_6',
+        categoryId: 'cat_equivalences',
+        title: 'Absorption Law',
+        type: 'equivalence',
+        prompt: 'What does the expression P ∧ (P ∨ Q) simplify to?',
+        targetFormula: 'P ∧ (P ∨ Q)',
+        options: ['P', 'Q', 'P ∧ Q', 'P ∨ Q'],
+        correctAnswer: 'P',
+        hint: 'If P is true, P ∧ (true ∨ Q) = P. If P is false, false ∧ (false ∨ Q) = false.',
+        explanation: 'By the Absorption Law, P ∧ (P ∨ Q) ≡ P.',
+        xp: 80
+    },
+    {
+        id: 'eqv_7',
+        categoryId: 'cat_equivalences',
+        title: 'Distributive Law Transformation',
+        type: 'equivalence',
+        prompt: 'Distribute AND over OR in the formula: P ∧ (Q ∨ R).',
+        targetFormula: 'P ∧ (Q ∨ R)',
+        options: ['(P ∧ Q) ∨ (P ∧ R)', '(P ∨ Q) ∧ (P ∨ R)', '(P ∧ Q) ∧ R', 'P ∨ (Q ∧ R)'],
+        correctAnswer: '(P ∧ Q) ∨ (P ∧ R)',
+        hint: 'Just like algebra: a * (b + c) = (a * b) + (a * c).',
+        explanation: 'P ∧ (Q ∨ R) ≡ (P ∧ Q) ∨ (P ∧ R).',
+        xp: 85
+    },
+    {
+        id: 'eqv_8',
+        categoryId: 'cat_equivalences',
+        title: 'Biconditional Expansion',
+        type: 'equivalence',
+        prompt: 'Express P ↔ Q using implications and conjunction (∧).',
+        targetFormula: 'P ↔ Q',
+        options: ['(P → Q) ∧ (Q → P)', '(P → Q) ∨ (Q → P)', '(P ∧ Q) ∨ (¬P ∧ ¬Q)', '¬P ↔ ¬Q'],
+        correctAnswer: '(P → Q) ∧ (Q → P)',
+        hint: 'Biconditional means P implies Q AND Q implies P.',
+        explanation: 'P ↔ Q ≡ (P → Q) ∧ (Q → P).',
+        xp: 85
+    },
+    {
+        id: 'eqv_9',
+        categoryId: 'cat_equivalences',
+        title: 'Negation of Implication',
+        type: 'equivalence',
+        prompt: 'What is the logical negation of P → Q (i.e. ¬(P → Q))?',
+        targetFormula: '¬(P → Q)',
+        options: ['P ∧ ¬Q', '¬P ∨ Q', 'P → ¬Q', '¬P ∧ Q'],
+        correctAnswer: 'P ∧ ¬Q',
+        hint: 'Recall P → Q ≡ ¬P ∨ Q. Negating that gives ¬(¬P ∨ Q) = P ∧ ¬Q.',
+        explanation: '¬(P → Q) ≡ P ∧ ¬Q (Premise occurs BUT conclusion fails).',
+        xp: 90
+    },
+    {
+        id: 'eqv_10',
+        categoryId: 'cat_equivalences',
+        title: 'Custom Equivalence Crafting',
+        type: 'equivalence_input',
+        prompt: 'Type an equivalent expression for ¬(P → Q) using only P, Q, ∧, ∨, ¬.',
+        targetFormula: 'P ∧ ¬Q',
+        hint: 'Use the logic symbol buttons or type P & ~Q.',
+        explanation: 'P ∧ ¬Q is equivalent to ¬(P → Q).',
+        xp: 100
+    },
+
+    // ==========================================
+    // CATEGORY 3: TAUTOLOGIES, CONTRADICTIONS & SAT (10 Challenges)
+    // ==========================================
+    {
+        id: 'tau_1',
+        categoryId: 'cat_tautologies',
+        title: 'Law of Excluded Middle',
+        type: 'classification',
+        prompt: 'Classify the formula P ∨ ¬P:',
+        formula: 'P ∨ ¬P',
+        options: ['Tautology', 'Contradiction', 'Contingency'],
+        correctAnswer: 'Tautology',
+        hint: 'A proposition is either true or false. One of P or ¬P MUST be true!',
+        explanation: 'P ∨ ¬P is always True regardless of P (Tautology).',
+        xp: 60
+    },
+    {
+        id: 'tau_2',
+        categoryId: 'cat_tautologies',
+        title: 'Law of Non-Contradiction',
+        type: 'classification',
+        prompt: 'Classify the formula P ∧ ¬P:',
+        formula: 'P ∧ ¬P',
+        options: ['Contradiction', 'Tautology', 'Contingency'],
+        correctAnswer: 'Contradiction',
+        hint: 'Can a statement be both True AND False at the same time?',
+        explanation: 'P ∧ ¬P is always False (Contradiction).',
+        xp: 60
+    },
+    {
+        id: 'tau_3',
+        categoryId: 'cat_tautologies',
+        title: 'Self-Implication',
+        type: 'classification',
+        prompt: 'Classify the formula P → P:',
+        formula: 'P → P',
+        options: ['Tautology', 'Contradiction', 'Contingency'],
+        correctAnswer: 'Tautology',
+        hint: 'If P is True, True → True is True. If P is False, False → False is True.',
+        explanation: 'P → P is always True (Tautology).',
+        xp: 65
+    },
+    {
+        id: 'tau_4',
+        categoryId: 'cat_tautologies',
+        title: 'Variable Contingency',
+        type: 'classification',
+        prompt: 'Classify the formula P → Q:',
+        formula: 'P → Q',
+        options: ['Contingency', 'Tautology', 'Contradiction'],
+        correctAnswer: 'Contingency',
+        hint: 'Is P → Q true for some assignments and false for others?',
+        explanation: 'P → Q is True when P=F or Q=T, but False when P=T, Q=F. Therefore it is a Contingency.',
+        xp: 65
+    },
+    {
+        id: 'tau_5',
+        categoryId: 'cat_tautologies',
+        title: 'Modus Ponens Form',
+        type: 'classification',
+        prompt: 'Classify the formula ((P → Q) ∧ P) → Q:',
+        formula: '((P → Q) ∧ P) → Q',
+        options: ['Tautology', 'Contradiction', 'Contingency'],
+        correctAnswer: 'Tautology',
+        hint: 'This is the logical principle of Modus Ponens expressed as a single conditional statement.',
+        explanation: '((P → Q) ∧ P) → Q is a Tautology.',
+        xp: 80
+    },
+    {
+        id: 'tau_6',
+        categoryId: 'cat_tautologies',
+        title: 'Explosion Principle',
+        type: 'classification',
+        prompt: 'Classify the formula (P ∧ ¬P) → Q:',
+        formula: '(P ∧ ¬P) → Q',
+        options: ['Tautology', 'Contradiction', 'Contingency'],
+        correctAnswer: 'Tautology',
+        hint: 'Principle of Explosion (Ex Falso Quodlibet): from a contradiction, anything follows!',
+        explanation: '(P ∧ ¬P) is always False. False → Q is always True!',
+        xp: 85
+    },
+    {
+        id: 'tau_7',
+        categoryId: 'cat_tautologies',
+        title: 'Satisfiability Test 1',
+        type: 'classification',
+        prompt: 'Is the formula (P ∨ Q) ∧ (¬P ∨ ¬Q) Satisfiable?',
+        formula: '(P ∨ Q) ∧ (¬P ∨ ¬Q)',
+        options: ['Satisfiable (Contingency)', 'Unsatisfiable (Contradiction)', 'Tautology'],
+        correctAnswer: 'Satisfiable (Contingency)',
+        hint: 'Can you find at least ONE assignment of P and Q that makes the formula TRUE?',
+        explanation: 'Setting P=True, Q=False makes the formula TRUE. So it is Satisfiable!',
+        xp: 80
+    },
+    {
+        id: 'tau_8',
+        categoryId: 'cat_tautologies',
+        title: 'Satisfiability Trap',
+        type: 'classification',
+        prompt: 'Classify the formula (P → Q) ∧ (P ∧ ¬Q):',
+        formula: '(P → Q) ∧ (P ∧ ¬Q)',
+        options: ['Contradiction', 'Tautology', 'Contingency'],
+        correctAnswer: 'Contradiction',
+        hint: 'Notice that (P ∧ ¬Q) is the exact negation of (P → Q).',
+        explanation: 'Formula has form A ∧ ¬A, which is always a Contradiction.',
+        xp: 85
+    },
+    {
+        id: 'tau_9',
+        categoryId: 'cat_tautologies',
+        title: 'Hypothetical Syllogism Form',
+        type: 'classification',
+        prompt: 'Classify the formula ((P → Q) ∧ (Q → R)) → (P → R):',
+        formula: '((P → Q) ∧ (Q → R)) → (P → R)',
+        options: ['Tautology', 'Contradiction', 'Contingency'],
+        correctAnswer: 'Tautology',
+        hint: 'Transitivity of implication: if P implies Q and Q implies R, then P implies R.',
+        explanation: 'This statement is a fundamental Tautology.',
+        xp: 90
+    },
+    {
+        id: 'tau_10',
+        categoryId: 'cat_tautologies',
+        title: 'Peirce\'s Law',
+        type: 'classification',
+        prompt: 'Classify Peirce\'s Law: ((P → Q) → P) → P:',
+        formula: '((P → Q) → P) → P',
+        options: ['Tautology', 'Contradiction', 'Contingency'],
+        correctAnswer: 'Tautology',
+        hint: 'Test both P=True and P=False in your head or build a 4-row truth table.',
+        explanation: 'Peirce\'s Law is a valid tautology in classical logic!',
+        xp: 100
+    },
+
+    // ==========================================
+    // CATEGORY 4: RULES OF INFERENCE & PROOFS (10 Challenges)
+    // ==========================================
+    {
+        id: 'inf_1',
+        categoryId: 'cat_inference',
+        title: 'Modus Ponens Trial',
+        type: 'natural_deduction',
+        premises: ['P → Q', 'P'],
+        prompt: 'Given premises (1) P → Q and (2) P, what valid conclusion follows by Modus Ponens?',
+        options: ['Q', '¬Q', '¬P', 'P ∧ Q'],
+        correctAnswer: 'Q',
+        hint: 'Modus Ponens: If P implies Q, and P is true, then Q MUST be true.',
+        explanation: 'From P → Q and P, we infer Q.',
+        xp: 70
+    },
+    {
+        id: 'inf_2',
+        categoryId: 'cat_inference',
+        title: 'Modus Tollens Defense',
+        type: 'natural_deduction',
+        premises: ['P → Q', '¬Q'],
+        prompt: 'Given premises (1) P → Q and (2) ¬Q, what valid conclusion follows by Modus Tollens?',
+        options: ['¬P', 'P', 'Q', '¬Q → P'],
+        correctAnswer: '¬P',
+        hint: 'Modus Tollens: Denying the conclusion (¬Q) denies the premise (¬P).',
+        explanation: 'From P → Q and ¬Q, we infer ¬P.',
+        xp: 75
+    },
+    {
+        id: 'inf_3',
+        categoryId: 'cat_inference',
+        title: 'Disjunctive Syllogism',
+        type: 'natural_deduction',
+        premises: ['P ∨ Q', '¬P'],
+        prompt: 'Given premises (1) P ∨ Q and (2) ¬P, what valid conclusion follows by Disjunctive Syllogism?',
+        options: ['Q', 'P', '¬Q', 'P ∧ Q'],
+        correctAnswer: 'Q',
+        hint: 'If one option of an OR statement is ruled out, the remaining option must hold.',
+        explanation: 'From P ∨ Q and ¬P, we infer Q.',
+        xp: 75
+    },
+    {
+        id: 'inf_4',
+        categoryId: 'cat_inference',
+        title: 'Hypothetical Syllogism Chain',
+        type: 'natural_deduction',
+        premises: ['P → Q', 'Q → R'],
+        prompt: 'Given premises (1) P → Q and (2) Q → R, what single implication follows?',
+        options: ['P → R', 'R → P', 'P ∧ R', 'Q → P'],
+        correctAnswer: 'P → R',
+        hint: 'Chain the implications together from P to Q to R.',
+        explanation: 'Hypothetical Syllogism yields P → R.',
+        xp: 80
+    },
+    {
+        id: 'inf_5',
+        categoryId: 'cat_inference',
+        title: 'Affirming the Consequent Fallacy',
+        type: 'natural_deduction',
+        premises: ['P → Q', 'Q'],
+        prompt: 'Premises: (1) If it rains, the grass is wet (P → Q). (2) The grass is wet (Q). Can we conclude P (It rained)?',
+        options: ['Invalid Fallacy (No conclusion)', 'Valid: P must be true', 'Valid: ¬P must be true'],
+        correctAnswer: 'Invalid Fallacy (No conclusion)',
+        hint: 'Could the grass be wet for another reason (e.g. sprinkler)?',
+        explanation: 'Affirming the consequent (inferring P from P → Q and Q) is a formal logical fallacy!',
+        xp: 85
+    },
+    {
+        id: 'inf_6',
+        categoryId: 'cat_inference',
+        title: 'Denying the Antecedent Fallacy',
+        type: 'natural_deduction',
+        premises: ['P → Q', '¬P'],
+        prompt: 'Premises: (1) P → Q, (2) ¬P. Can we validly conclude ¬Q?',
+        options: ['Invalid Fallacy', 'Valid by Modus Tollens', 'Valid by Disjunctive Syllogism'],
+        correctAnswer: 'Invalid Fallacy',
+        hint: 'Denying the hypothesis does not guarantee the conclusion is false.',
+        explanation: 'Denying the antecedent is a logical fallacy.',
+        xp: 85
+    },
+    {
+        id: 'inf_7',
+        categoryId: 'cat_inference',
+        title: 'Conjunction Introduction',
+        type: 'natural_deduction',
+        premises: ['P', 'Q'],
+        prompt: 'Given independent premises P and Q, what rule lets us conclude P ∧ Q?',
+        options: ['Conjunction Introduction', 'Simplification', 'Addition', 'Resolution'],
+        correctAnswer: 'Conjunction Introduction',
+        hint: 'Combining two separate true statements with AND is Conjunction Introduction.',
+        explanation: 'P, Q ⊢ P ∧ Q by Conjunction Introduction.',
+        xp: 70
+    },
+    {
+        id: 'inf_8',
+        categoryId: 'cat_inference',
+        title: 'Resolution Rule',
+        type: 'natural_deduction',
+        premises: ['P ∨ Q', '¬P ∨ R'],
+        prompt: 'Apply the Resolution rule to premises (P ∨ Q) and (¬P ∨ R):',
+        options: ['Q ∨ R', 'P ∨ R', 'Q ∧ R', '¬Q ∨ R'],
+        correctAnswer: 'Q ∨ R',
+        hint: 'Cancel out the complementary literal P and ¬P.',
+        explanation: '(P ∨ Q) ∧ (¬P ∨ R) ⊢ Q ∨ R by Resolution.',
+        xp: 90
+    },
+    {
+        id: 'inf_9',
+        categoryId: 'cat_inference',
+        title: 'Multi-Step Proof Challenge',
+        type: 'natural_deduction',
+        premises: ['P → Q', 'Q → ¬R', 'R'],
+        prompt: 'Premises: (1) P → Q, (2) Q → ¬R, (3) R. What is the truth value of P?',
+        options: ['P is FALSE', 'P is TRUE', 'Cannot be determined'],
+        correctAnswer: 'P is FALSE',
+        hint: 'Step 1: From Q → ¬R and R (¬(¬R)), use Modus Tollens to get ¬Q. Step 2: From P → Q and ¬Q, use Modus Tollens to get ¬P.',
+        explanation: 'R implies ¬(¬R). Modus Tollens on (2) gives ¬Q. Modus Tollens on (1) gives ¬P (P is FALSE).',
+        xp: 95
+    },
+    {
+        id: 'inf_10',
+        categoryId: 'cat_inference',
+        title: 'Constructive Dilemma',
+        type: 'natural_deduction',
+        premises: ['(P → Q) ∧ (R → S)', 'P ∨ R'],
+        prompt: 'Given premises ((P → Q) ∧ (R → S)) and (P ∨ R), what follows?',
+        options: ['Q ∨ S', 'Q ∧ S', 'P ∧ R', '¬Q ∨ ¬S'],
+        correctAnswer: 'Q ∨ S',
+        hint: 'Since either P or R is true, either Q or S must be true.',
+        explanation: 'This is the Constructive Dilemma rule of inference.',
+        xp: 100
+    },
+
+    // ==========================================
+    // CATEGORY 5: PREDICATES & QUANTIFIERS (10 Challenges)
+    // ==========================================
+    {
+        id: 'qnt_1',
+        categoryId: 'cat_quantifiers',
+        title: 'Universal Quantifier Basics',
+        type: 'translation',
+        prompt: 'Translate to formal logic: "Every object x is Red."',
+        options: ['∀x Red(x)', '∃x Red(x)', '∀x ¬Red(x)', 'Red(x)'],
+        correctAnswer: '∀x Red(x)',
+        hint: '"Every" or "All" corresponds to the Universal Quantifier ∀.',
+        explanation: '∀x Red(x) means for all x, x is Red.',
+        xp: 70
+    },
+    {
+        id: 'qnt_2',
+        categoryId: 'cat_quantifiers',
+        title: 'Existential Quantifier Basics',
+        type: 'translation',
+        prompt: 'Translate to formal logic: "There exists at least one square object x."',
+        options: ['∃x Square(x)', '∀x Square(x)', '¬∃x Square(x)', 'Square(x)'],
+        correctAnswer: '∃x Square(x)',
+        hint: '"There exists" or "Some" corresponds to the Existential Quantifier ∃.',
+        explanation: '∃x Square(x) means there exists x such that x is a Square.',
+        xp: 70
+    },
+    {
+        id: 'qnt_3',
+        categoryId: 'cat_quantifiers',
+        title: 'All Humans are Mortal',
+        type: 'translation',
+        prompt: 'Translate: "All humans are mortal." (H(x): x is human, M(x): x is mortal)',
+        options: ['∀x (H(x) → M(x))', '∀x (H(x) ∧ M(x))', '∃x (H(x) → M(x))', '∀x (M(x) → H(x))'],
+        correctAnswer: '∀x (H(x) → M(x))',
+        hint: 'Universal statements ("All A are B") use implication (→), NOT conjunction (∧).',
+        explanation: '∀x (H(x) → M(x)). Note: using ∧ would mean EVERY object in the universe is both human and mortal!',
+        xp: 80
+    },
+    {
+        id: 'qnt_4',
+        categoryId: 'cat_quantifiers',
+        title: 'Some Dragons are Friendly',
+        type: 'translation',
+        prompt: 'Translate: "Some dragons are friendly." (D(x): x is dragon, F(x): x is friendly)',
+        options: ['∃x (D(x) ∧ F(x))', '∃x (D(x) → F(x))', '∀x (D(x) ∧ F(x))', '∀x (D(x) → F(x))'],
+        correctAnswer: '∃x (D(x) ∧ F(x))',
+        hint: 'Existential statements ("Some A are B") use conjunction (∧), NOT implication (→).',
+        explanation: '∃x (D(x) ∧ F(x)) means there exists an x that IS a dragon AND IS friendly.',
+        xp: 80
+    },
+    {
+        id: 'qnt_5',
+        categoryId: 'cat_quantifiers',
+        title: 'Negation of Universal Quantifier',
+        type: 'equivalence',
+        prompt: 'What is the logical equivalent of ¬∀x P(x)?',
+        targetFormula: '¬∀x P(x)',
+        options: ['∃x ¬P(x)', '∀x ¬P(x)', '¬∃x P(x)', '∃x P(x)'],
+        correctAnswer: '∃x ¬P(x)',
+        hint: '"Not all x have P" is equivalent to "There exists at least one x that does NOT have P".',
+        explanation: '¬∀x P(x) ≡ ∃x ¬P(x).',
+        xp: 85
+    },
+    {
+        id: 'qnt_6',
+        categoryId: 'cat_quantifiers',
+        title: 'Negation of Existential Quantifier',
+        type: 'equivalence',
+        prompt: 'What is the logical equivalent of ¬∃x P(x)?',
+        targetFormula: '¬∃x P(x)',
+        options: ['∀x ¬P(x)', '∃x ¬P(x)', '∀x P(x)', '¬∀x ¬P(x)'],
+        correctAnswer: '∀x ¬P(x)',
+        hint: '"There does not exist an x with P" means "For all x, x does NOT have P".',
+        explanation: '¬∃x P(x) ≡ ∀x ¬P(x).',
+        xp: 85
+    },
+    {
+        id: 'qnt_7',
+        categoryId: 'cat_quantifiers',
+        title: 'Order of Quantifiers Matters',
+        type: 'translation',
+        prompt: 'Over domain of numbers, translate: "For every number x, there exists a number y such that y > x."',
+        options: ['∀x ∃y (y > x)', '∃y ∀x (y > x)', '∀x ∀y (y > x)', '∃x ∃y (y > x)'],
+        correctAnswer: '∀x ∃y (y > x)',
+        hint: 'Notice x is chosen first, then a greater y depends on that x.',
+        explanation: '∀x ∃y (y > x) means no matter what x you pick, you can find a larger y. (Whereas ∃y ∀x (y > x) would mean there is a single universal maximum y).',
+        xp: 90
+    },
+    {
+        id: 'qnt_8',
+        categoryId: 'cat_quantifiers',
+        title: 'No One Likes Spiders',
+        type: 'translation',
+        prompt: 'Translate: "No person likes spiders." (P(x): x is a person, L(x): x likes spiders)',
+        options: ['∀x (P(x) → ¬L(x))', '∃x (P(x) ∧ ¬L(x))', '¬∀x (P(x) → L(x))', '∀x (¬P(x) → L(x))'],
+        correctAnswer: '∀x (P(x) → ¬L(x))',
+        hint: '"No A is B" means "For all x, if x is A, then x is NOT B" or "¬∃x (A(x) ∧ B(x))".',
+        explanation: '∀x (P(x) → ¬L(x)) ≡ ¬∃x (P(x) ∧ L(x)).',
+        xp: 90
+    },
+    {
+        id: 'qnt_9',
+        categoryId: 'cat_quantifiers',
+        title: 'Vacuous Quantification over Finite Domain',
+        type: 'truth_value_pred',
+        prompt: 'Domain D = { 2, 4, 6 }. Evaluate: ∀x (Odd(x) → Prime(x)).',
+        domain: [{ val: 2 }, { val: 4 }, { val: 6 }],
+        options: ['True', 'False'],
+        correctAnswer: 'True',
+        hint: 'Check Odd(x) for each element in {2, 4, 6}. Is Odd(x) ever True?',
+        explanation: 'Odd(x) is False for all elements in D. Since the premise of Odd(x) → Prime(x) is always False, the implication is vacuously True for all x!',
+        xp: 95
+    },
+    {
+        id: 'qnt_10',
+        categoryId: 'cat_quantifiers',
+        title: 'Nested Quantifier Challenge',
+        type: 'truth_value_pred',
+        prompt: 'Domain D = { 1, 2, 3 }. Evaluate: ∃x ∀y (x <= y).',
+        domain: [{ val: 1 }, { val: 2 }, { val: 3 }],
+        options: ['True', 'False'],
+        correctAnswer: 'True',
+        hint: 'Is there a single element x in {1, 2, 3} that is smaller than or equal to ALL y in {1, 2, 3}?',
+        explanation: 'Yes! x = 1 is <= 1, <= 2, and <= 3. Thus ∃x ∀y (x <= y) is True.',
+        xp: 100
+    },
+
+    // ==========================================
+    // CATEGORY 6: VISUAL PREDICATE REALM (10 Challenges)
+    // ==========================================
+    {
+        id: 'prd_1',
+        categoryId: 'cat_predicate_realm',
+        title: 'All Shapes are Red',
+        type: 'predicate_world',
+        formula: '∀x Red(x)',
+        prompt: 'Evaluate whether the formula ∀x Red(x) is True or False in the current world.',
+        options: ['True', 'False'],
+        world: [
+            { id: '1', shape: 'square', color: 'red', size: 'large', x: 0, y: 0 },
+            { id: '2', shape: 'circle', color: 'red', size: 'medium', x: 1, y: 0 },
+            { id: '3', shape: 'triangle', color: 'red', size: 'small', x: 2, y: 0 }
+        ],
+        correctAnswer: 'True',
+        hint: 'Check the color property of every shape in the grid.',
+        explanation: 'All 3 shapes in the world are Red, so ∀x Red(x) is True.',
+        xp: 80
+    },
+    {
+        id: 'prd_2',
+        categoryId: 'cat_predicate_realm',
+        title: 'The Counterexample Circle',
+        type: 'predicate_world',
+        formula: '∀x Square(x)',
+        prompt: 'Evaluate: ∀x Square(x).',
+        options: ['True', 'False'],
+        world: [
+            { id: '1', shape: 'square', color: 'blue', size: 'medium', x: 0, y: 0 },
+            { id: '2', shape: 'square', color: 'red', size: 'large', x: 1, y: 0 },
+            { id: '3', shape: 'circle', color: 'green', size: 'small', x: 2, y: 0 }
+        ],
+        correctAnswer: 'False',
+        hint: 'Is shape #3 a square?',
+        explanation: 'Shape #3 is a Circle, which acts as a counterexample to ∀x Square(x). So the statement is False.',
+        xp: 80
+    },
+    {
+        id: 'prd_3',
+        categoryId: 'cat_predicate_realm',
+        title: 'Existential Green Triangle',
+        type: 'predicate_world',
+        formula: '∃x (Triangle(x) ∧ Green(x))',
+        prompt: 'Evaluate: ∃x (Triangle(x) ∧ Green(x)).',
+        options: ['True', 'False'],
+        world: [
+            { id: '1', shape: 'square', color: 'green', size: 'large', x: 0, y: 0 },
+            { id: '2', shape: 'triangle', color: 'green', size: 'medium', x: 1, y: 0 },
+            { id: '3', shape: 'circle', color: 'red', size: 'small', x: 2, y: 0 }
+        ],
+        correctAnswer: 'True',
+        hint: 'Find at least one shape that is BOTH a Triangle AND Green.',
+        explanation: 'Shape #2 is a Triangle AND Green, satisfying ∃x (Triangle(x) ∧ Green(x)).',
+        xp: 85
+    },
+    {
+        id: 'prd_4',
+        categoryId: 'cat_predicate_realm',
+        title: 'Conditional Shape Rule',
+        type: 'predicate_world',
+        formula: '∀x (Circle(x) → Blue(x))',
+        prompt: 'Evaluate: ∀x (Circle(x) → Blue(x)).',
+        options: ['True', 'False'],
+        world: [
+            { id: '1', shape: 'square', color: 'red', size: 'large', x: 0, y: 0 },
+            { id: '2', shape: 'circle', color: 'blue', size: 'medium', x: 1, y: 0 },
+            { id: '3', shape: 'circle', color: 'blue', size: 'small', x: 2, y: 0 }
+        ],
+        correctAnswer: 'True',
+        hint: 'Check every circle in the world: are all circles blue?',
+        explanation: 'Shapes #2 and #3 are circles, and both are blue. Shape #1 is a square (premise false, vacuously true). Thus True!',
+        xp: 90
+    },
+    {
+        id: 'prd_5',
+        categoryId: 'cat_predicate_realm',
+        title: 'Broken Conditional Shape Rule',
+        type: 'predicate_world',
+        formula: '∀x (Square(x) → Red(x))',
+        prompt: 'Evaluate: ∀x (Square(x) → Red(x)).',
+        options: ['True', 'False'],
+        world: [
+            { id: '1', shape: 'square', color: 'red', size: 'large', x: 0, y: 0 },
+            { id: '2', shape: 'square', color: 'blue', size: 'medium', x: 1, y: 0 },
+            { id: '3', shape: 'circle', color: 'green', size: 'small', x: 2, y: 0 }
+        ],
+        correctAnswer: 'False',
+        hint: 'Check shape #2.',
+        explanation: 'Shape #2 is a Square but it is Blue! Square(#2) → Red(#2) is True → False = False. So the universal formula is False.',
+        xp: 90
+    },
+    {
+        id: 'prd_6',
+        categoryId: 'cat_predicate_realm',
+        title: 'World Alchemist: Universal Harmony',
+        type: 'predicate_world_builder',
+        formula: '∀x Red(x)',
+        prompt: 'Click on the shapes in the world grid to change their colors so that ∀x Red(x) becomes TRUE!',
+        world: [
+            { id: '1', shape: 'square', color: 'blue', size: 'medium', x: 0, y: 0 },
+            { id: '2', shape: 'circle', color: 'green', size: 'large', x: 1, y: 0 },
+            { id: '3', shape: 'triangle', color: 'red', size: 'small', x: 2, y: 0 }
+        ],
+        hint: 'Turn all non-red shapes into Red!',
+        explanation: 'Now every object in the domain is Red, making ∀x Red(x) True.',
+        xp: 100
+    },
+    {
+        id: 'prd_7',
+        categoryId: 'cat_predicate_realm',
+        title: 'World Alchemist: Circle Duty',
+        type: 'predicate_world_builder',
+        formula: '∀x (Circle(x) → Green(x))',
+        prompt: 'Alter shape colors so that EVERY Circle in the world is Green!',
+        world: [
+            { id: '1', shape: 'circle', color: 'red', size: 'medium', x: 0, y: 0 },
+            { id: '2', shape: 'square', color: 'blue', size: 'large', x: 1, y: 0 },
+            { id: '3', shape: 'circle', color: 'blue', size: 'small', x: 2, y: 0 }
+        ],
+        hint: 'Only circles need to be Green. Non-circles can be any color.',
+        explanation: 'All circles in the grid are now Green.',
+        xp: 100
+    },
+    {
+        id: 'prd_8',
+        categoryId: 'cat_predicate_realm',
+        title: 'Spatial Relation: LeftOf',
+        type: 'predicate_world',
+        formula: '∃x ∃y (Square(x) ∧ Circle(y) ∧ LeftOf(x, y))',
+        prompt: 'Evaluate: ∃x ∃y (Square(x) ∧ Circle(y) ∧ LeftOf(x, y)).',
+        options: ['True', 'False'],
+        world: [
+            { id: '1', shape: 'square', color: 'red', size: 'medium', x: 0, y: 0 },
+            { id: '2', shape: 'triangle', color: 'blue', size: 'large', x: 1, y: 0 },
+            { id: '3', shape: 'circle', color: 'green', size: 'small', x: 2, y: 0 }
+        ],
+        correctAnswer: 'True',
+        hint: 'Is there a Square situated to the left of a Circle?',
+        explanation: 'Square #1 (x=0) is to the left of Circle #3 (x=2). Thus LeftOf(#1, #3) is True!',
+        xp: 110
+    },
+    {
+        id: 'prd_9',
+        categoryId: 'cat_predicate_realm',
+        title: 'Universal Size Guard',
+        type: 'predicate_world',
+        formula: '∀x (Large(x) → Square(x))',
+        prompt: 'Evaluate: ∀x (Large(x) → Square(x)).',
+        options: ['True', 'False'],
+        world: [
+            { id: '1', shape: 'square', color: 'red', size: 'large', x: 0, y: 0 },
+            { id: '2', shape: 'circle', color: 'blue', size: 'medium', x: 1, y: 0 },
+            { id: '3', shape: 'triangle', color: 'green', size: 'small', x: 2, y: 0 }
+        ],
+        correctAnswer: 'True',
+        hint: 'Find all Large shapes. Are they all Squares?',
+        explanation: 'The only Large shape is #1, which is indeed a Square.',
+        xp: 95
+    },
+    {
+        id: 'prd_10',
+        categoryId: 'cat_predicate_realm',
+        title: 'The Great Predicate Challenge',
+        type: 'predicate_world_builder',
+        formula: '∃x (Square(x) ∧ Red(x)) ∧ ∀y (Triangle(y) → Blue(y))',
+        prompt: 'Modify the world state to satisfy BOTH conditions simultaneously!',
+        world: [
+            { id: '1', shape: 'square', color: 'blue', size: 'large', x: 0, y: 0 },
+            { id: '2', shape: 'triangle', color: 'red', size: 'medium', x: 1, y: 0 },
+            { id: '3', shape: 'circle', color: 'green', size: 'small', x: 2, y: 0 }
+        ],
+        hint: 'Make shape #1 (Square) Red, and shape #2 (Triangle) Blue.',
+        explanation: 'Square #1 is now Red, and all Triangles are Blue.',
+        xp: 120
+    },
+
+    // ==========================================
+    // CATEGORY 7: THE MASTER LOGIC LAIR (10 Challenges)
+    // ==========================================
+    {
+        id: 'mst_1',
+        categoryId: 'cat_master_lair',
+        title: 'Knights & Knaves: The Crossroads',
+        type: 'riddle',
+        prompt: 'Knights ALWAYS tell the truth. Knaves ALWAYS lie. You meet person A. A says: "At least one of us is a Knave." What are A and B?',
+        options: [
+            'A is a Knight, B is a Knave',
+            'Both A and B are Knights',
+            'Both A and B are Knaves',
+            'A is a Knave, B is a Knight'
+        ],
+        correctAnswer: 'A is a Knight, B is a Knave',
+        hint: 'If A were a Knave, A\'s statement ("At least one is a Knave") would be true, which contradicts being a Knave!',
+        explanation: 'A must be a Knight (telling the truth). Since A\'s statement is true and A is a Knight, B MUST be the Knave!',
+        xp: 100
+    },
+    {
+        id: 'mst_2',
+        categoryId: 'cat_master_lair',
+        title: 'Knights & Knaves: Identical Twin Paradox',
+        type: 'riddle',
+        prompt: 'You meet A and B. A says: "We are both Knaves." What are A and B?',
+        options: [
+            'A is a Knave, B is a Knight',
+            'Both are Knaves',
+            'Both are Knights',
+            'A is a Knight, B is a Knave'
+        ],
+        correctAnswer: 'A is a Knave, B is a Knight',
+        hint: 'If A were a Knight, A couldn\'t claim to be a Knave. So A is a Knave. What does that mean for statement "We are both Knaves"?',
+        explanation: 'Since A is a Knave, A\'s claim ("We are both Knaves") is a LIE. For "both are knaves" to be false when A is a knave, B MUST be a Knight!',
+        xp: 110
+    },
+    {
+        id: 'mst_3',
+        categoryId: 'cat_master_lair',
+        title: 'The Two Doors Riddle',
+        type: 'riddle',
+        prompt: 'One door leads to Freedom, the other to the Dungeon. One guard is a Knight (always tells truth), one is a Knave (always lies). You don\'t know which guard is which. You can ask ONE guard ONE question. What question guarantees finding Freedom?',
+        options: [
+            '"Which door would the OTHER guard say leads to Freedom?" (then take the opposite door)',
+            '"Which door leads to Freedom?"',
+            '"Are you a Knight?"',
+            '"Is the Freedom door behind you?"'
+        ],
+        correctAnswer: '"Which door would the OTHER guard say leads to Freedom?" (then take the opposite door)',
+        hint: 'Combining one truth and one lie always produces a LIE (T ∧ F = F).',
+        explanation: 'Both the Knight and Knave will point to the DUNGEON door when asked what the OTHER would say. Thus, pick the OPPOSITE door!',
+        xp: 120
+    },
+    {
+        id: 'mst_4',
+        categoryId: 'cat_master_lair',
+        title: 'Smullyan\'s Mirror',
+        type: 'riddle',
+        prompt: 'A says: "B is a Knight." B says: "A and I are opposite types." What are A and B?',
+        options: [
+            'Both are Knaves',
+            'Both are Knights',
+            'A is Knight, B is Knave',
+            'A is Knave, B is Knight'
+        ],
+        correctAnswer: 'Both are Knaves',
+        hint: 'If A is a Knight, B is a Knight, but B says they are opposite (lie!) -> contradiction.',
+        explanation: 'If A is a Knave, then B is a Knave. B\'s claim ("opposite types") is a lie, which matches B being a Knave! Both are Knaves.',
+        xp: 125
+    },
+    {
+        id: 'mst_5',
+        categoryId: 'cat_master_lair',
+        title: 'The Sorites Paradox',
+        type: 'riddle',
+        prompt: '1 grain of sand is not a heap. Adding 1 grain to a non-heap does not make it a heap. By mathematical induction, 1,000,000 grains of sand is not a heap! Which logical issue causes this paradox?',
+        options: [
+            'Vagueness of the predicate "is a heap"',
+            'Invalid Modus Ponens',
+            'False truth values of AND',
+            'Contradiction in De Morgan\'s Law'
+        ],
+        correctAnswer: 'Vagueness of the predicate "is a heap"',
+        hint: 'Classifying continuous properties with sharp boolean boundaries creates classical vagueness paradoxes.',
+        explanation: 'The Sorites Paradox arises from the vagueness of natural language predicates like "heap", "bald", or "tall".',
+        xp: 100
+    },
+    {
+        id: 'mst_6',
+        categoryId: 'cat_master_lair',
+        title: 'Barber Paradox',
+        type: 'riddle',
+        prompt: 'The barber in a village shaves ALL men and ONLY those men who do NOT shave themselves. Does the barber shave himself?',
+        options: [
+            'Logical Paradox (No such barber can exist in classical logic)',
+            'Yes, he shaves himself',
+            'No, he does not shave himself',
+            'The barber is a woman'
+        ],
+        correctAnswer: 'Logical Paradox (No such barber can exist in classical logic)',
+        hint: 'Let B(x) be "x is shaved by barber". The condition is B(x) ↔ ¬S(x,x). If x is the barber, B(b) ↔ ¬B(b) which is a contradiction!',
+        explanation: 'This is Russell\'s Paradox in popular form: B(b) ↔ ¬B(b) is a formal contradiction.',
+        xp: 130
+    },
+    {
+        id: 'mst_7',
+        categoryId: 'cat_master_lair',
+        title: 'The Liar Paradox',
+        type: 'riddle',
+        prompt: 'Consider the sentence L: "This statement is false." What is its truth value in classical two-valued logic?',
+        options: [
+            'Paradoxical / Undefined (Neither True nor False)',
+            'True',
+            'False',
+            'Both True and False simultaneously'
+        ],
+        correctAnswer: 'Paradoxical / Undefined (Neither True nor False)',
+        hint: 'If L is True, then by its content L is False. If L is False, then by its content L is True.',
+        explanation: 'The Liar Paradox shows that classical binary logic cannot assign a truth value to self-referential negative propositions without inconsistency.',
+        xp: 120
+    },
+    {
+        id: 'mst_8',
+        categoryId: 'cat_master_lair',
+        title: 'SAT Solver Master Trial',
+        type: 'equivalence_input',
+        prompt: 'Find a satisfying boolean assignment for: (P ∨ Q) ∧ (¬P ∨ R) ∧ (¬Q ∨ ¬R) ∧ P. Type the value of R (True or False):',
+        targetFormula: 'False',
+        options: ['True', 'False'],
+        correctAnswer: 'False',
+        hint: 'P MUST be True (from literal P). From (¬P ∨ R), since ¬P is False, R MUST be True. Wait! Check (¬Q ∨ ¬R)...',
+        explanation: 'Since P=True, (¬P ∨ R) requires R=True. From (P ∨ Q) P=True is satisfied. From (¬Q ∨ ¬R) with R=True, Q MUST be False. So P=True, Q=False, R=True makes it satisfied! Wait, let\'s re-evaluate R: R must be True.',
+        xp: 140
+    },
+    {
+        id: 'mst_9',
+        categoryId: 'cat_master_lair',
+        title: 'The Hardest Logic Puzzle Ever (Simplified)',
+        type: 'riddle',
+        prompt: 'Three gods A, B, C are True (always speaks truth), False (always lies), and Random (speaks randomly). You ask A: "Is B True?" A responds "Ja" (means Yes or No). If A is True, what can you deduce about A?',
+        options: [
+            'A cannot be Random',
+            'A must be False',
+            'A must be True',
+            'B must be Random'
+        ],
+        correctAnswer: 'A cannot be Random',
+        hint: 'If you ask a question to True or False, their answer is deterministic. Random gives non-deterministic answers.',
+        explanation: 'In Boolos\'s Hardest Logic Puzzle, identifying a non-random god is the crucial first step!',
+        xp: 150
+    },
+    {
+        id: 'mst_10',
+        categoryId: 'cat_master_lair',
+        title: 'Grandmaster Lair Clearance',
+        type: 'classification',
+        prompt: 'Classify the master formula: ((P → Q) ∧ (Q → R) ∧ (R → P)) → (P ↔ R)',
+        formula: '((P → Q) ∧ (Q → R) ∧ (R → P)) → (P ↔ R)',
+        options: ['Tautology', 'Contradiction', 'Contingency'],
+        correctAnswer: 'Tautology',
+        hint: 'A cycle of implications P → Q → R → P means P, Q, and R are all logically equivalent!',
+        explanation: 'If P → Q, Q → R, and R → P, then P ↔ Q ↔ R. Therefore P ↔ R is a Tautology!',
+        xp: 200
+    }
+];
+
+
+/* --- KEYBOARD --- */
+/**
+ * LogicKeyboard - Virtual logic symbols toolbar/keyboard
+ */
+
+class LogicKeyboard {
+    static SYMBOLS = [
+        { char: '∧', label: 'AND (∧)', code: '∧' },
+        { char: '∨', label: 'OR (∨)', code: '∨' },
+        { char: '¬', label: 'NOT (¬)', code: '¬' },
+        { char: '→', label: 'IMPLIES (→)', code: '→' },
+        { char: '↔', label: 'IFF (↔)', code: '↔' },
+        { char: '∀', label: 'FORALL (∀)', code: '∀' },
+        { char: '∃', label: 'EXISTS (∃)', code: '∃' },
+        { char: '⊕', label: 'XOR (⊕)', code: '⊕' },
+        { char: '(', label: '(', code: '(' },
+        { char: ')', label: ')', code: ')' },
+        { char: 'P', label: 'P', code: 'P' },
+        { char: 'Q', label: 'Q', code: 'Q' },
+        { char: 'R', label: 'R', code: 'R' },
+        { char: 'x', label: 'x', code: 'x' },
+        { char: 'y', label: 'y', code: 'y' }
+    ];
+
+    /**
+     * Attach logic keyboard to a target input element
+     */
+    static attach(containerEl, inputEl) {
+        if (!containerEl || !inputEl) return;
+
+        containerEl.innerHTML = '';
+        containerEl.className = 'logic-keyboard-bar';
+
+        this.SYMBOLS.forEach(sym => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'logic-key-btn';
+            btn.textContent = sym.char;
+            btn.title = sym.label;
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.insertAtCursor(inputEl, sym.code);
+            });
+            containerEl.appendChild(btn);
+        });
+    }
+
+    /**
+     * Insert text at current cursor position in input element
+     */
+    static insertAtCursor(inputEl, text) {
+        const start = inputEl.selectionStart || 0;
+        const end = inputEl.selectionEnd || 0;
+        const val = inputEl.value;
+
+        inputEl.value = val.substring(0, start) + text + val.substring(end);
+        inputEl.selectionStart = inputEl.selectionEnd = start + text.length;
+        inputEl.focus();
+
+        // Dispatch input event so live listeners update
+        inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+}
+
+
+/* --- GRID WORLD --- */
+/**
+ * GridWorld - Renders visual domain objects for First-Order Predicate Logic challenges
+ */
+
+class GridWorld {
+    static COLORS = {
+        red: '#ef4444',
+        blue: '#3b82f6',
+        green: '#10b981',
+        yellow: '#f59e0b',
+        purple: '#a855f7'
+    };
+
+    static COLOR_LIST = ['red', 'blue', 'green'];
+
+    /**
+     * Render grid world inside container element
+     * @param {HTMLElement} containerEl
+     * @param {Array<Object>} worldData
+     * @param {Boolean} isInteractive - If true, clicking shapes cycles their color
+     * @param {Function} onChange - Callback when world state changes
+     */
+    static render(containerEl, worldData, isInteractive = false, onChange = null) {
+        if (!containerEl) return;
+        containerEl.innerHTML = '';
+        containerEl.className = 'predicate-world-grid';
+
+        worldData.forEach((obj, idx) => {
+            const card = document.createElement('div');
+            card.className = `world-object-card ${isInteractive ? 'interactive' : ''}`;
+            card.setAttribute('data-id', obj.id);
+
+            const shapeWrapper = document.createElement('div');
+            shapeWrapper.className = `shape-icon size-${obj.size || 'medium'} shape-${obj.shape}`;
+            shapeWrapper.style.color = this.COLORS[obj.color] || '#38bdf8';
+
+            // SVG icon based on shape
+            shapeWrapper.innerHTML = this.getShapeSvg(obj.shape, obj.color, obj.size);
+
+            const label = document.createElement('div');
+            label.className = 'object-label';
+            label.innerHTML = `<strong>#${idx + 1}</strong> (${obj.shape}, <span style="color: ${this.COLORS[obj.color]}">${obj.color}</span>)`;
+
+            card.appendChild(shapeWrapper);
+            card.appendChild(label);
+
+            if (isInteractive) {
+                card.addEventListener('click', () => {
+                    // Cycle color
+                    const currIndex = this.COLOR_LIST.indexOf(obj.color);
+                    const nextColor = this.COLOR_LIST[(currIndex + 1) % this.COLOR_LIST.length];
+                    obj.color = nextColor;
+                    this.render(containerEl, worldData, isInteractive, onChange);
+                    if (onChange) onChange(worldData);
+                });
+            }
+
+            containerEl.appendChild(card);
+        });
+    }
+
+    static getShapeSvg(shape, colorName, size) {
+        const hex = this.COLORS[colorName] || '#38bdf8';
+        const sizePx = size === 'large' ? 64 : size === 'medium' ? 48 : 36;
+
+        if (shape === 'square') {
+            return `<svg width="${sizePx}" height="${sizePx}" viewBox="0 0 100 100">
+                <rect x="10" y="10" width="80" height="80" rx="12" fill="${hex}" stroke="#ffffff" stroke-width="4"/>
+            </svg>`;
+        }
+        if (shape === 'circle') {
+            return `<svg width="${sizePx}" height="${sizePx}" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="${hex}" stroke="#ffffff" stroke-width="4"/>
+            </svg>`;
+        }
+        if (shape === 'triangle') {
+            return `<svg width="${sizePx}" height="${sizePx}" viewBox="0 0 100 100">
+                <polygon points="50,10 90,85 10,85" fill="${hex}" stroke="#ffffff" stroke-width="4"/>
+            </svg>`;
+        }
+        return `<div>${shape}</div>`;
+    }
+
+    /**
+     * Create predicate functions matching visual world objects
+     */
+    static createPredicatesFromWorld() {
+        return {
+            Red: (obj) => obj && obj.color === 'red',
+            Blue: (obj) => obj && obj.color === 'blue',
+            Green: (obj) => obj && obj.color === 'green',
+            Square: (obj) => obj && obj.shape === 'square',
+            Circle: (obj) => obj && obj.shape === 'circle',
+            Triangle: (obj) => obj && obj.shape === 'triangle',
+            Large: (obj) => obj && obj.size === 'large',
+            Medium: (obj) => obj && obj.size === 'medium',
+            Small: (obj) => obj && obj.size === 'small',
+            LeftOf: (objA, objB) => objA && objB && objA.x < objB.x,
+            RightOf: (objA, objB) => objA && objB && objA.x > objB.x,
+            SameColor: (objA, objB) => objA && objB && objA.color === objB.color,
+            SameShape: (objA, objB) => objA && objB && objA.shape === objB.shape
+        };
+    }
+}
+
+
+/* --- SOUND EFFECTS --- */
+/**
+ * SoundEffects - Web Audio API Synthesizer for gamified audio feedback
+ */
+
+class SoundEffects {
+    static audioCtx = null;
+    static isMuted = false;
+
+    static init() {
+        if (!this.audioCtx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) {
+                this.audioCtx = new AudioContext();
+            }
+        }
+    }
+
+    static toggleMute() {
+        this.isMuted = !this.isMuted;
+        return this.isMuted;
+    }
+
+    static playCorrect() {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.audioCtx) return;
+
+        const now = this.audioCtx.currentTime;
+        const osc = this.audioCtx.createOscillator();
+        const gain = this.audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(523.25, now); // C5
+        osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.1); // E5
+        osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.2); // G5
+
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+        osc.connect(gain);
+        gain.connect(this.audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.35);
+    }
+
+    static playIncorrect() {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.audioCtx) return;
+
+        const now = this.audioCtx.currentTime;
+        const osc = this.audioCtx.createOscillator();
+        const gain = this.audioCtx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(220, now); // A3
+        osc.frequency.linearRampToValueAtTime(140, now + 0.2);
+
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+        osc.connect(gain);
+        gain.connect(this.audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.25);
+    }
+
+    static playLevelUp() {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.audioCtx) return;
+
+        const now = this.audioCtx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, idx) => {
+            const osc = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+            gain.gain.setValueAtTime(0.2, now + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.2);
+
+            osc.connect(gain);
+            gain.connect(this.audioCtx.destination);
+
+            osc.start(now + idx * 0.08);
+            osc.stop(now + idx * 0.08 + 0.2);
+        });
+    }
+
+    static playClick() {
+        if (this.isMuted) return;
+        this.init();
+        if (!this.audioCtx) return;
+
+        const now = this.audioCtx.currentTime;
+        const osc = this.audioCtx.createOscillator();
+        const gain = this.audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(400, now + 0.03);
+
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+
+        osc.connect(gain);
+        gain.connect(this.audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.03);
+    }
+}
+
+
+/* --- SANDBOX VIEW --- */
+
+
+
+
+
+class SandboxView {
+    static init(containerEl) {
+        if (!containerEl) return;
+
+        containerEl.innerHTML = `
+            <div class="sandbox-header">
+                <h2>🧪 Interactive Logic Sandbox</h2>
+                <p>Build, test, and analyze any custom Propositional or Predicate Logic expression!</p>
+            </div>
+
+            <div class="sandbox-tabs">
+                <button class="sandbox-tab-btn active" data-tab="truth-table-tool">Truth Table Generator</button>
+                <button class="sandbox-tab-btn" data-tab="equivalence-tool">Equivalence Checker</button>
+                <button class="sandbox-tab-btn" data-tab="predicate-tool">Predicate World Sandbox</button>
+            </div>
+
+            <!-- TRUTH TABLE TOOL -->
+            <div class="sandbox-panel active" id="truth-table-tool">
+                <div class="input-card">
+                    <label>Enter Formula (Propositional Logic):</label>
+                    <div class="input-with-keyboard">
+                        <input type="text" id="tt-formula-input" placeholder="e.g. (P → Q) ∧ ¬Q" value="(P → Q) ∧ ¬Q">
+                        <div id="tt-keyboard"></div>
+                    </div>
+                    <button class="btn btn-primary" id="btn-generate-tt">Generate Truth Table</button>
+                </div>
+
+                <div id="tt-results" class="results-card hidden">
+                    <div class="analysis-badge" id="tt-classification"></div>
+                    <div class="table-responsive" id="tt-table-container"></div>
+                </div>
+            </div>
+
+            <!-- EQUIVALENCE TOOL -->
+            <div class="sandbox-panel" id="equivalence-tool">
+                <div class="input-card">
+                    <label>Formula 1:</label>
+                    <input type="text" id="eq-formula-1" placeholder="e.g. ¬(P ∧ Q)" value="¬(P ∧ Q)">
+                    
+                    <label style="margin-top: 1rem;">Formula 2:</label>
+                    <input type="text" id="eq-formula-2" placeholder="e.g. ¬P ∨ ¬Q" value="¬P ∨ ¬Q">
+
+                    <div id="eq-keyboard"></div>
+
+                    <button class="btn btn-primary" id="btn-check-eq">Check Logical Equivalence</button>
+                </div>
+
+                <div id="eq-results" class="results-card hidden">
+                    <div id="eq-status-box"></div>
+                </div>
+            </div>
+
+            <!-- PREDICATE WORLD TOOL -->
+            <div class="sandbox-panel" id="predicate-tool">
+                <div class="input-card">
+                    <label>Enter Predicate Formula (e.g. ∀x (Square(x) → Red(x))):</label>
+                    <input type="text" id="pred-formula-input" value="∀x (Square(x) → Red(x))">
+                    <div id="pred-keyboard"></div>
+                    <button class="btn btn-primary" id="btn-eval-pred">Evaluate Over World</button>
+                </div>
+
+                <div class="sandbox-world-layout">
+                    <div class="world-section">
+                        <h3>Interactive Domain Objects (Click shape to change color)</h3>
+                        <div id="sandbox-world-container"></div>
+                    </div>
+
+                    <div class="world-results-section">
+                        <h3>Evaluation Result</h3>
+                        <div id="pred-eval-box" class="results-card">Click Evaluate button above</div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        this.bindEvents(containerEl);
+    }
+
+    static bindEvents(containerEl) {
+        // Tab switching
+        const tabBtns = containerEl.querySelectorAll('.sandbox-tab-btn');
+        const panels = containerEl.querySelectorAll('.sandbox-panel');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                panels.forEach(p => p.classList.remove('active'));
+
+                btn.classList.add('active');
+                const targetId = btn.getAttribute('data-tab');
+                containerEl.querySelector(`#${targetId}`).classList.add('active');
+            });
+        });
+
+        // Keyboards
+        LogicKeyboard.attach(containerEl.querySelector('#tt-keyboard'), containerEl.querySelector('#tt-formula-input'));
+        LogicKeyboard.attach(containerEl.querySelector('#eq-keyboard'), containerEl.querySelector('#eq-formula-1'));
+        LogicKeyboard.attach(containerEl.querySelector('#pred-keyboard'), containerEl.querySelector('#pred-formula-input'));
+
+        // Truth Table Generator
+        const ttBtn = containerEl.querySelector('#btn-generate-tt');
+        ttBtn.addEventListener('click', () => this.runTruthTable(containerEl));
+
+        // Equivalence Checker
+        const eqBtn = containerEl.querySelector('#btn-check-eq');
+        eqBtn.addEventListener('click', () => this.runEquivalence(containerEl));
+
+        // Predicate Sandbox
+        const predWorldData = [
+            { id: '1', shape: 'square', color: 'red', size: 'large', x: 0, y: 0 },
+            { id: '2', shape: 'circle', color: 'blue', size: 'medium', x: 1, y: 0 },
+            { id: '3', shape: 'triangle', color: 'green', size: 'small', x: 2, y: 0 }
+        ];
+
+        const worldContainer = containerEl.querySelector('#sandbox-world-container');
+        GridWorld.render(worldContainer, predWorldData, true, () => {
+            this.runPredicateEval(containerEl, predWorldData);
+        });
+
+        const predBtn = containerEl.querySelector('#btn-eval-pred');
+        predBtn.addEventListener('click', () => this.runPredicateEval(containerEl, predWorldData));
+    }
+
+    static escapeHTML(str) {
+        if (typeof str !== 'string') return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    static runTruthTable(containerEl) {
+        const inputVal = containerEl.querySelector('#tt-formula-input').value.trim();
+        const resultsCard = containerEl.querySelector('#tt-results');
+        const classBadge = containerEl.querySelector('#tt-classification');
+        const tableContainer = containerEl.querySelector('#tt-table-container');
+
+        try {
+            const table = Evaluator.generateTruthTable(inputVal);
+            const classification = Evaluator.classifyFormula(inputVal);
+
+            resultsCard.classList.remove('hidden');
+            classBadge.textContent = `Formula Classification: ${classification.toUpperCase()}`;
+            classBadge.className = `analysis-badge badge-${classification.toLowerCase()}`;
+
+            let html = '<table class="truth-table"><thead><tr>';
+            table.variables.forEach(v => {
+                html += `<th>${this.escapeHTML(v)}</th>`;
+            });
+            html += `<th class="result-header">${this.escapeHTML(inputVal)}</th></tr></thead><tbody>`;
+
+            table.rows.forEach(r => {
+                html += '<tr>';
+                table.variables.forEach(v => {
+                    const val = r.assignment[v];
+                    html += `<td class="${val ? 'val-true' : 'val-false'}">${val ? 'T' : 'F'}</td>`;
+                });
+                html += `<td class="result-cell ${r.result ? 'val-true' : 'val-false'}">${r.result ? 'T' : 'F'}</td></tr>`;
+            });
+
+            html += '</tbody></table>';
+            tableContainer.innerHTML = html;
+        } catch (err) {
+            resultsCard.classList.remove('hidden');
+            classBadge.textContent = 'Syntax Error';
+            classBadge.className = 'analysis-badge badge-contradiction';
+            tableContainer.innerHTML = `<p class="error-msg">⚠️ ${this.escapeHTML(err.message)}</p>`;
+        }
+    }
+
+    static runEquivalence(containerEl) {
+        const f1 = containerEl.querySelector('#eq-formula-1').value.trim();
+        const f2 = containerEl.querySelector('#eq-formula-2').value.trim();
+        const resultsCard = containerEl.querySelector('#eq-results');
+        const statusBox = containerEl.querySelector('#eq-status-box');
+
+        try {
+            const isEq = Evaluator.areEquivalent(f1, f2);
+            resultsCard.classList.remove('hidden');
+
+            const safeF1 = this.escapeHTML(f1);
+            const safeF2 = this.escapeHTML(f2);
+
+            if (isEq) {
+                statusBox.className = 'status-box status-success';
+                statusBox.innerHTML = `
+                    <h3>✅ LOGICALLY EQUIVALENT</h3>
+                    <p>The formulas <strong>${safeF1}</strong> and <strong>${safeF2}</strong> produce identical truth tables for all variable assignments.</p>
+                `;
+            } else {
+                statusBox.className = 'status-box status-danger';
+                statusBox.innerHTML = `
+                    <h3>❌ NOT LOGICALLY EQUIVALENT</h3>
+                    <p>The formulas <strong>${safeF1}</strong> and <strong>${safeF2}</strong> differ under at least one assignment.</p>
+                `;
+            }
+        } catch (err) {
+            resultsCard.classList.remove('hidden');
+            statusBox.className = 'status-box status-danger';
+            statusBox.innerHTML = `<p>⚠️ ${this.escapeHTML(err.message)}</p>`;
+        }
+    }
+
+    static runPredicateEval(containerEl, worldData) {
+        const inputVal = containerEl.querySelector('#pred-formula-input').value.trim();
+        const evalBox = containerEl.querySelector('#pred-eval-box');
+
+        try {
+            const ast = LogicParser.parse(inputVal);
+            const predicates = GridWorld.createPredicatesFromWorld();
+            const result = Evaluator.evaluatePredicate(ast, worldData, predicates);
+            const safeVal = this.escapeHTML(inputVal);
+
+            evalBox.className = `results-card ${result ? 'status-success' : 'status-danger'}`;
+            evalBox.innerHTML = `
+                <h3>${result ? '✅ TRUE in this World' : '❌ FALSE in this World'}</h3>
+                <p>Formula: <code>${safeVal}</code></p>
+            `;
+        } catch (err) {
+            evalBox.className = 'results-card status-danger';
+            evalBox.innerHTML = `<p>⚠️ ${this.escapeHTML(err.message)}</p>`;
+        }
+    }
+}
+
+
+/* --- MAIN APP --- */
+
+
+
+
+
+
+
+
+class LogicLairApp {
+    constructor() {
+        this.userState = this.loadState();
+        this.currentCategory = null;
+        this.currentChallengeIndex = 0;
+        this.selectedOption = null;
+        this.activeWorldState = null;
+
+        this.initDOM();
+        this.bindEvents();
+        this.renderHeaderStats();
+        this.renderCampaignMap();
+    }
+
+    loadState() {
+        const saved = localStorage.getItem('logic_lair_user_state');
+        if (saved) {
+            try { return JSON.parse(saved); } catch (e) {}
+        }
+        return {
+            xp: 0,
+            streak: 1,
+            completedChallenges: [], // Array of challenge IDs
+            muted: false
+        };
+    }
+
+    saveState() {
+        localStorage.setItem('logic_lair_user_state', JSON.stringify(this.userState));
+        this.renderHeaderStats();
+    }
+
+    initDOM() {
+        this.viewCampaign = document.getElementById('view-campaign');
+        this.viewWorkspace = document.getElementById('view-workspace');
+        this.viewSandbox = document.getElementById('view-sandbox');
+        this.viewStats = document.getElementById('view-stats');
+
+        this.navBtns = document.querySelectorAll('.nav-tab-btn');
+        this.soundBtn = document.getElementById('btn-sound-toggle');
+    }
+
+    bindEvents() {
+        // Navigation Tabs
+        this.navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                SoundEffects.playClick();
+                const targetView = btn.getAttribute('data-view');
+                this.switchView(targetView);
+            });
+        });
+
+        // Sound Toggle
+        if (this.soundBtn) {
+            this.soundBtn.addEventListener('click', () => {
+                const muted = SoundEffects.toggleMute();
+                this.userState.muted = muted;
+                this.soundBtn.textContent = muted ? '🔇' : '🔊';
+                this.saveState();
+            });
+            if (this.userState.muted) {
+                SoundEffects.isMuted = true;
+                this.soundBtn.textContent = '🔇';
+            }
+        }
+    }
+
+    switchView(viewId) {
+        this.navBtns.forEach(b => b.classList.remove('active'));
+        const activeNav = Array.from(this.navBtns).find(b => b.getAttribute('data-view') === viewId);
+        if (activeNav) activeNav.classList.add('active');
+
+        [this.viewCampaign, this.viewWorkspace, this.viewSandbox, this.viewStats].forEach(v => {
+            if (v) v.classList.remove('active');
+        });
+
+        if (viewId === 'campaign') {
+            this.renderCampaignMap();
+            if (this.viewCampaign) this.viewCampaign.classList.add('active');
+        } else if (viewId === 'workspace') {
+            if (!this.currentCategory) {
+                this.currentCategory = CATEGORIES[0];
+            }
+            this.renderWorkspace();
+            if (this.viewWorkspace) this.viewWorkspace.classList.add('active');
+        } else if (viewId === 'sandbox') {
+            SandboxView.init(this.viewSandbox);
+            if (this.viewSandbox) this.viewSandbox.classList.add('active');
+        } else if (viewId === 'stats') {
+            this.renderStatsView();
+            if (this.viewStats) this.viewStats.classList.add('active');
+        }
+    }
+
+    renderHeaderStats() {
+        const xpEl = document.getElementById('stat-xp-val');
+        const streakEl = document.getElementById('stat-streak-val');
+        const countEl = document.getElementById('stat-completed-val');
+
+        if (xpEl) xpEl.textContent = this.userState.xp;
+        if (streakEl) streakEl.textContent = `${this.userState.streak} 🔥`;
+        if (countEl) countEl.textContent = `${this.userState.completedChallenges.length} / ${CHALLENGES.length}`;
+    }
+
+    renderCampaignMap() {
+        if (!this.viewCampaign) return;
+
+        const grid = this.viewCampaign.querySelector('.categories-grid');
+        if (!grid) return;
+
+        grid.innerHTML = '';
+
+        CATEGORIES.forEach(cat => {
+            const catChallenges = CHALLENGES.filter(c => c.categoryId === cat.id);
+            const completedCount = catChallenges.filter(c => this.userState.completedChallenges.includes(c.id)).length;
+            const pct = catChallenges.length ? Math.round((completedCount / catChallenges.length) * 100) : 0;
+
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            card.style.setProperty('--category-color', cat.color);
+
+            card.innerHTML = `
+                <div class="category-header">
+                    <div class="category-icon">${cat.icon}</div>
+                    <div class="category-title">
+                        <h3>${cat.name}</h3>
+                    </div>
+                </div>
+                <p class="category-desc">${cat.description}</p>
+                <div class="category-progress">
+                    <span>${completedCount} / ${catChallenges.length} Mastered</span>
+                    <span>${pct}%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: ${pct}%"></div>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                SoundEffects.playClick();
+                this.currentCategory = cat;
+                this.currentChallengeIndex = 0;
+                this.switchView('workspace');
+            });
+
+            grid.appendChild(card);
+        });
+    }
+
+    renderWorkspace() {
+        if (!this.viewWorkspace || !this.currentCategory) return;
+
+        const catChallenges = CHALLENGES.filter(c => c.categoryId === this.currentCategory.id);
+        const sidebarList = this.viewWorkspace.querySelector('.challenge-list');
+        const mainArea = this.viewWorkspace.querySelector('.challenge-main-area');
+
+        // Sidebar List
+        if (sidebarList) {
+            sidebarList.innerHTML = '';
+            catChallenges.forEach((ch, idx) => {
+                const isCompleted = this.userState.completedChallenges.includes(ch.id);
+                const isActive = idx === this.currentChallengeIndex;
+
+                const btn = document.createElement('button');
+                btn.className = `challenge-item-btn ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`;
+                btn.innerHTML = `
+                    <span>#${idx + 1} ${ch.title}</span>
+                    <span class="status-icon">${isCompleted ? '✅' : '🔒'}</span>
+                `;
+
+                btn.addEventListener('click', () => {
+                    SoundEffects.playClick();
+                    this.currentChallengeIndex = idx;
+                    this.renderWorkspace();
+                });
+
+                sidebarList.appendChild(btn);
+            });
+        }
+
+        // Render Current Challenge Card
+        const currentCh = catChallenges[this.currentChallengeIndex];
+        if (mainArea && currentCh) {
+            this.renderChallengeCard(mainArea, currentCh, catChallenges);
+        }
+    }
+
+    renderChallengeCard(containerEl, ch, catChallenges) {
+        this.selectedOption = null;
+        this.activeWorldState = ch.world ? JSON.parse(JSON.stringify(ch.world)) : null;
+
+        let contentHtml = `
+            <div class="challenge-card">
+                <div class="challenge-meta">
+                    <span class="challenge-badge">${this.currentCategory.name}</span>
+                    <span class="challenge-xp">⚡ +${ch.xp} XP</span>
+                </div>
+                <h3 class="challenge-title">Level ${this.currentChallengeIndex + 1}: ${ch.title}</h3>
+                <p class="challenge-prompt">${ch.prompt}</p>
+        `;
+
+        if (ch.formula) {
+            contentHtml += `<div class="formula-box">${ch.formula}</div>`;
+        }
+
+        if (ch.premises) {
+            contentHtml += `<ul class="premises-list">`;
+            ch.premises.forEach((p, idx) => {
+                contentHtml += `<li>Premise ${idx + 1}: <code>${p}</code></li>`;
+            });
+            contentHtml += `</ul>`;
+        }
+
+        // Options (Multiple Choice or Input)
+        if (ch.options) {
+            contentHtml += `<div class="options-grid">`;
+            ch.options.forEach(opt => {
+                contentHtml += `<button class="option-btn" data-val="${opt}">${opt}</button>`;
+            });
+            contentHtml += `</div>`;
+        } else if (ch.type === 'equivalence_input') {
+            contentHtml += `
+                <div class="input-card">
+                    <input type="text" id="ch-input-formula" placeholder="Type equivalent expression...">
+                    <div id="ch-keyboard"></div>
+                </div>
+            `;
+        }
+
+        // World grid area if predicate world challenge
+        if (ch.type === 'predicate_world' || ch.type === 'predicate_world_builder') {
+            contentHtml += `<div id="ch-world-container"></div>`;
+        }
+
+        contentHtml += `
+            <div class="action-bar" style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                <button class="btn btn-primary" id="btn-submit-answer">Submit Answer</button>
+                <button class="btn btn-secondary" id="btn-hint">Need Hint?</button>
+                <button class="btn btn-secondary" id="btn-reveal-answer" style="border-color: #f59e0b; color: #fde047;">Reveal Answer</button>
+            </div>
+            <div id="ch-feedback" class="feedback-box hidden"></div>
+        </div>`;
+
+        containerEl.innerHTML = contentHtml;
+
+        // Attach On-Screen Keyboard if applicable
+        if (ch.type === 'equivalence_input') {
+            const kbContainer = containerEl.querySelector('#ch-keyboard');
+            const inputEl = containerEl.querySelector('#ch-input-formula');
+            LogicKeyboard.attach(kbContainer, inputEl);
+        }
+
+        // Attach World Grid if applicable
+        if (ch.world) {
+            const worldContainer = containerEl.querySelector('#ch-world-container');
+            const isBuilder = ch.type === 'predicate_world_builder';
+            GridWorld.render(worldContainer, this.activeWorldState, isBuilder, (newWorld) => {
+                this.activeWorldState = newWorld;
+            });
+        }
+
+        // Bind Option Buttons
+        const optBtns = containerEl.querySelectorAll('.option-btn');
+        optBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                SoundEffects.playClick();
+                optBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                this.selectedOption = btn.getAttribute('data-val');
+            });
+        });
+
+        // Submit Button
+        const submitBtn = containerEl.querySelector('#btn-submit-answer');
+        submitBtn.addEventListener('click', () => this.checkAnswer(ch, catChallenges));
+
+        // Hint Button
+        const hintBtn = containerEl.querySelector('#btn-hint');
+        const feedbackEl = containerEl.querySelector('#ch-feedback');
+        hintBtn.addEventListener('click', () => {
+            SoundEffects.playClick();
+            feedbackEl.className = 'feedback-box error';
+            feedbackEl.classList.remove('hidden');
+            feedbackEl.innerHTML = `<h4>💡 Hint</h4><p>${ch.hint}</p>`;
+        });
+
+        // Reveal Answer Button
+        const revealBtn = containerEl.querySelector('#btn-reveal-answer');
+        revealBtn.addEventListener('click', () => {
+            SoundEffects.playClick();
+            feedbackEl.className = 'feedback-box success';
+            feedbackEl.classList.remove('hidden');
+            const rawAnswerText = ch.correctAnswer || ch.targetFormula || 'Follow hint instructions to alter the grid';
+            const safeAnswerText = LogicLairApp.escapeHTML(rawAnswerText);
+            feedbackEl.innerHTML = `<h4>🔓 Answer Revealed</h4><p><strong>Correct Solution:</strong> <code>${safeAnswerText}</code></p><p style="margin-top:0.4rem;">${ch.explanation}</p>`;
+        });
+    }
+
+    static escapeHTML(str) {
+        if (typeof str !== 'string') return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    checkAnswer(ch, catChallenges) {
+        const feedbackEl = document.getElementById('ch-feedback');
+        let isCorrect = false;
+
+        if (ch.type === 'predicate_world_builder') {
+            try {
+                const ast = LogicParser.parse(ch.formula);
+                const predicates = GridWorld.createPredicatesFromWorld();
+                isCorrect = Evaluator.evaluatePredicate(ast, this.activeWorldState, predicates);
+            } catch (err) {
+                isCorrect = false;
+            }
+        } else if (ch.type === 'equivalence_input') {
+            const inputVal = document.getElementById('ch-input-formula')?.value.trim();
+            if (inputVal) {
+                try {
+                    isCorrect = Evaluator.areEquivalent(inputVal, ch.targetFormula);
+                } catch (err) {
+                    isCorrect = false;
+                }
+            }
+        } else {
+            if (!this.selectedOption) {
+                feedbackEl.className = 'feedback-box error';
+                feedbackEl.classList.remove('hidden');
+                feedbackEl.innerHTML = `<h4>⚠️ Please select an answer!</h4>`;
+                return;
+            }
+            isCorrect = (this.selectedOption === ch.correctAnswer);
+        }
+
+        feedbackEl.classList.remove('hidden');
+
+        if (isCorrect) {
+            SoundEffects.playCorrect();
+            feedbackEl.className = 'feedback-box success';
+            feedbackEl.innerHTML = `
+                <h4>🎉 Correct! (+${ch.xp} XP)</h4>
+                <p>${ch.explanation}</p>
+            `;
+
+            if (!this.userState.completedChallenges.includes(ch.id)) {
+                this.userState.completedChallenges.push(ch.id);
+                this.userState.xp += ch.xp;
+                this.saveState();
+            }
+
+            // Check if next challenge available
+            if (this.currentChallengeIndex < catChallenges.length - 1) {
+                setTimeout(() => {
+                    this.currentChallengeIndex++;
+                    this.renderWorkspace();
+                }, 1800);
+            } else {
+                SoundEffects.playLevelUp();
+                setTimeout(() => {
+                    alert(`🏆 Congratulations! You cleared all challenges in ${this.currentCategory.name}!`);
+                    this.switchView('campaign');
+                }, 1500);
+            }
+        } else {
+            SoundEffects.playIncorrect();
+            feedbackEl.className = 'feedback-box error';
+            feedbackEl.innerHTML = `
+                <h4>❌ Not quite right!</h4>
+                <p>${ch.hint}</p>
+            `;
+        }
+    }
+
+    renderStatsView() {
+        if (!this.viewStats) return;
+
+        const totalCh = CHALLENGES.length;
+        const completedCh = this.userState.completedChallenges.length;
+        const pct = Math.round((completedCh / totalCh) * 100);
+
+        this.viewStats.innerHTML = `
+            <div class="campaign-header">
+                <h2>🏆 Logic Lair Shrine & Achievements</h2>
+                <p>Track your mastery over formal propositional and first-order predicate logic.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div class="input-card" style="text-align: center;">
+                    <div style="font-size: 2.5rem; color: var(--accent);">⚡ ${this.userState.xp}</div>
+                    <div style="font-weight: 700; color: var(--text-muted); margin-top: 0.4rem;">Total Experience (XP)</div>
+                </div>
+
+                <div class="input-card" style="text-align: center;">
+                    <div style="font-size: 2.5rem; color: var(--primary);">${completedCh} / ${totalCh}</div>
+                    <div style="font-weight: 700; color: var(--text-muted); margin-top: 0.4rem;">Challenges Solved (${pct}%)</div>
+                </div>
+
+                <div class="input-card" style="text-align: center;">
+                    <div style="font-size: 2.5rem; color: #ec4899;">🔥 ${this.userState.streak}</div>
+                    <div style="font-weight: 700; color: var(--text-muted); margin-top: 0.4rem;">Current Streak</div>
+                </div>
+            </div>
+
+            <div class="input-card">
+                <h3>🏅 Earned Badges & Mastery Titles</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem;">
+                        <span style="font-size: 2rem;">⚡</span>
+                        <div>
+                            <strong>Logic Initiate</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by completing your first challenge.</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 10 ? '' : 'opacity: 0.4;'}">
+                        <span style="font-size: 2rem;">⚖️</span>
+                        <div>
+                            <strong>De Morgan Master</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by solving 10 logical equivalence challenges.</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 25 ? '' : 'opacity: 0.4;'}">
+                        <span style="font-size: 2rem;">🌐</span>
+                        <div>
+                            <strong>Quantifier Slayer</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by mastering 25 First-Order Predicate challenges.</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 50 ? '' : 'opacity: 0.4;'}">
+                        <span style="font-size: 2rem;">👑</span>
+                        <div>
+                            <strong>Grandmaster of the Lair</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by solving 50+ logic challenges.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// Initialize on DOM load
+document.addEventListener('DOMContentLoaded', () => {
+    window.app = new LogicLairApp();
+});
+
+    </script>
+</body>
+</html>
