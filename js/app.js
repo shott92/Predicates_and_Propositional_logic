@@ -78,8 +78,8 @@ class LogicLairApp {
 
     switchView(viewId) {
         this.navBtns.forEach(b => b.classList.remove('active'));
-        const activeNav = Array.from(this.navBtns).find(b => b.getAttribute('data-view') === viewId);
-        if (activeNav) activeNav.classList.add('active');
+        const activeNav = Array.from(this.navBtns).filter(b => b.getAttribute('data-view') === viewId);
+        activeNav.forEach(n => n.classList.add('active'));
 
         [this.viewCampaign, this.viewWorkspace, this.viewSandbox, this.viewStats].forEach(v => {
             if (v) v.classList.remove('active');
@@ -188,9 +188,10 @@ class LogicLairApp {
 
         const catChallenges = CHALLENGES.filter(c => c.categoryId === this.currentCategory.id);
         const sidebarList = this.viewWorkspace.querySelector('.challenge-list');
+        const mobileCarousel = this.viewWorkspace.querySelector('.mobile-level-carousel');
         const mainArea = this.viewWorkspace.querySelector('.challenge-main-area');
 
-        // Sidebar List
+        // Sidebar List (Desktop)
         if (sidebarList) {
             sidebarList.innerHTML = '';
             catChallenges.forEach((ch, idx) => {
@@ -211,6 +212,30 @@ class LogicLairApp {
                 });
 
                 sidebarList.appendChild(btn);
+            });
+        }
+
+        // Horizontal Carousel (Mobile)
+        if (mobileCarousel) {
+            mobileCarousel.innerHTML = '';
+            catChallenges.forEach((ch, idx) => {
+                const isCompleted = this.userState.completedChallenges.includes(ch.id);
+                const isActive = idx === this.currentChallengeIndex;
+
+                const chip = document.createElement('button');
+                chip.className = `mobile-level-chip ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`;
+                chip.innerHTML = `
+                    <span>#${idx + 1}</span>
+                    <span>${isCompleted ? '✅' : ''}</span>
+                `;
+
+                chip.addEventListener('click', () => {
+                    SoundEffects.playClick();
+                    this.currentChallengeIndex = idx;
+                    this.renderWorkspace();
+                });
+
+                mobileCarousel.appendChild(chip);
             });
         }
 

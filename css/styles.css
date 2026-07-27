@@ -805,5 +805,117 @@ body {
     outline: none;
 }
 
+/* ==========================================================================
+   Mobile-Optimized Layout Styles (.mobile-app-layout)
+   ========================================================================== */
+body.mobile-app-layout {
+    padding-bottom: 70px;
+}
+
+body.mobile-app-layout .app-header {
+    padding: 0.75rem 1rem;
+}
+
+body.mobile-app-layout .logo-text h1 {
+    font-size: 1.1rem;
+}
+
+body.mobile-app-layout .logo-text p {
+    display: none;
+}
+
+body.mobile-app-layout .header-stats {
+    gap: 0.5rem;
+}
+
+body.mobile-app-layout .stat-pill {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+}
+
+/* Fixed Bottom Mobile Navigation Bar */
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: rgba(9, 13, 22, 0.95);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-bottom-nav .nav-tab-btn {
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+.mobile-bottom-nav .nav-tab-btn span {
+    font-size: 1.2rem;
+}
+
+/* Mobile Horizontal Level Chip Carousel */
+.mobile-level-carousel {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0.5rem 0.25rem;
+    margin-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.mobile-level-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.mobile-level-chip {
+    flex: 0 0 auto;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.mobile-level-chip.active {
+    background: var(--primary);
+    color: #090d16;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px var(--border-glow);
+}
+
+.mobile-level-chip.completed {
+    border-color: var(--success);
+}
+
+/* Mobile Touch Target Enforcements */
+body.mobile-app-layout .option-btn {
+    min-height: 48px;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+}
+
+body.mobile-app-layout .btn {
+    min-height: 48px;
+    padding: 0.75rem 1.25rem;
+}
+
+
 
 

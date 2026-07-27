@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniMath Realm - eLearning App</title>
-    <meta name="description" content="A super portable offline eLearning application for mastering Propositional & Predicate Logic, Set Theory, Functions & Mappings, Cardinality & Infinities, and Calculus (Limits, Derivatives, Integrals). Shareable with zero prerequisites.">
-    
-    <!-- Google Fonts -->
+    <title>OmniMath Realm - Desktop Suite</title>
+    <meta name="description" content="Desktop-optimized eLearning web application for OmniMath Realm. Featuring split two-column workspace layouts and high-density wide grid views.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-    
     <style>
 /* ==========================================================================
    Prop & Preds Logic Lair - Deep Dark Cyber Gothic Design System
@@ -819,13 +816,124 @@ body {
     outline: none;
 }
 
+/* ==========================================================================
+   Mobile-Optimized Layout Styles (.mobile-app-layout)
+   ========================================================================== */
+body.mobile-app-layout {
+    padding-bottom: 70px;
+}
+
+body.mobile-app-layout .app-header {
+    padding: 0.75rem 1rem;
+}
+
+body.mobile-app-layout .logo-text h1 {
+    font-size: 1.1rem;
+}
+
+body.mobile-app-layout .logo-text p {
+    display: none;
+}
+
+body.mobile-app-layout .header-stats {
+    gap: 0.5rem;
+}
+
+body.mobile-app-layout .stat-pill {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+}
+
+/* Fixed Bottom Mobile Navigation Bar */
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: rgba(9, 13, 22, 0.95);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.mobile-bottom-nav .nav-tab-btn {
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+.mobile-bottom-nav .nav-tab-btn span {
+    font-size: 1.2rem;
+}
+
+/* Mobile Horizontal Level Chip Carousel */
+.mobile-level-carousel {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0.5rem 0.25rem;
+    margin-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.mobile-level-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.mobile-level-chip {
+    flex: 0 0 auto;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.mobile-level-chip.active {
+    background: var(--primary);
+    color: #090d16;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px var(--border-glow);
+}
+
+.mobile-level-chip.completed {
+    border-color: var(--success);
+}
+
+/* Mobile Touch Target Enforcements */
+body.mobile-app-layout .option-btn {
+    min-height: 48px;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+}
+
+body.mobile-app-layout .btn {
+    min-height: 48px;
+    padding: 0.75rem 1.25rem;
+}
+
+
 
 
 
     </style>
 </head>
 <body>
-    <!-- Header / App Bar -->
     <header class="app-header">
         <div class="logo-container">
             <div class="logo-icon">⚡</div>
@@ -851,7 +959,6 @@ body {
         </div>
     </header>
 
-    <!-- Navigation Bar -->
     <nav class="nav-bar">
         <button class="nav-tab-btn active" data-view="campaign">🗺️ Campaign Map</button>
         <button class="nav-tab-btn" data-view="workspace">⚡ Workspace</button>
@@ -859,9 +966,7 @@ body {
         <button class="nav-tab-btn" data-view="stats">🏆 Realm Shrine</button>
     </nav>
 
-    <!-- Main Container -->
     <main class="main-container">
-        <!-- VIEW 1: CAMPAIGN MAP -->
         <section id="view-campaign" class="view-panel active">
             <div class="campaign-header">
                 <h2>OmniMath Mathematics & Logic Campaign</h2>
@@ -870,7 +975,6 @@ body {
             <div class="categories-grid"></div>
         </section>
 
-        <!-- VIEW 2: WORKSPACE -->
         <section id="view-workspace" class="view-panel">
             <div class="workspace-layout">
                 <aside class="challenge-sidebar">
@@ -881,10 +985,7 @@ body {
             </div>
         </section>
 
-        <!-- VIEW 3: SANDBOX -->
         <section id="view-sandbox" class="view-panel"></section>
-
-        <!-- VIEW 4: STATS & SHRINE -->
         <section id="view-stats" class="view-panel"></section>
     </main>
 
@@ -4507,8 +4608,8 @@ class LogicLairApp {
 
     switchView(viewId) {
         this.navBtns.forEach(b => b.classList.remove('active'));
-        const activeNav = Array.from(this.navBtns).find(b => b.getAttribute('data-view') === viewId);
-        if (activeNav) activeNav.classList.add('active');
+        const activeNav = Array.from(this.navBtns).filter(b => b.getAttribute('data-view') === viewId);
+        activeNav.forEach(n => n.classList.add('active'));
 
         [this.viewCampaign, this.viewWorkspace, this.viewSandbox, this.viewStats].forEach(v => {
             if (v) v.classList.remove('active');
@@ -4617,9 +4718,10 @@ class LogicLairApp {
 
         const catChallenges = CHALLENGES.filter(c => c.categoryId === this.currentCategory.id);
         const sidebarList = this.viewWorkspace.querySelector('.challenge-list');
+        const mobileCarousel = this.viewWorkspace.querySelector('.mobile-level-carousel');
         const mainArea = this.viewWorkspace.querySelector('.challenge-main-area');
 
-        // Sidebar List
+        // Sidebar List (Desktop)
         if (sidebarList) {
             sidebarList.innerHTML = '';
             catChallenges.forEach((ch, idx) => {
@@ -4640,6 +4742,30 @@ class LogicLairApp {
                 });
 
                 sidebarList.appendChild(btn);
+            });
+        }
+
+        // Horizontal Carousel (Mobile)
+        if (mobileCarousel) {
+            mobileCarousel.innerHTML = '';
+            catChallenges.forEach((ch, idx) => {
+                const isCompleted = this.userState.completedChallenges.includes(ch.id);
+                const isActive = idx === this.currentChallengeIndex;
+
+                const chip = document.createElement('button');
+                chip.className = `mobile-level-chip ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`;
+                chip.innerHTML = `
+                    <span>#${idx + 1}</span>
+                    <span>${isCompleted ? '✅' : ''}</span>
+                `;
+
+                chip.addEventListener('click', () => {
+                    SoundEffects.playClick();
+                    this.currentChallengeIndex = idx;
+                    this.renderWorkspace();
+                });
+
+                mobileCarousel.appendChild(chip);
             });
         }
 
