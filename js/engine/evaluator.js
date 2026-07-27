@@ -52,10 +52,9 @@ export class Evaluator {
 
         for (let i = 0; i < numRows; i++) {
             const assignment = {};
-            // Generate binary truth assignments (reverse order so T appears before F)
             for (let j = 0; j < variables.length; j++) {
                 const bit = (i >> (variables.length - 1 - j)) & 1;
-                assignment[variables[j]] = bit === 0; // 0 -> True, 1 -> False (Standard truth table convention)
+                assignment[variables[j]] = bit === 0;
             }
 
             const result = this.evaluatePropositional(ast, assignment);
@@ -117,10 +116,6 @@ export class Evaluator {
 
     /**
      * Evaluate a First-Order Predicate Logic AST over a finite domain of objects
-     * @param {Object} ast - Parsed AST
-     * @param {Array<Object>} domain - List of domain items e.g., [{id: 'A', shape: 'square', color: 'red'}, ...]
-     * @param {Object} predicates - Map of predicate functions e.g., { Red: (obj) => obj.color === 'red' }
-     * @param {Object} varEnv - Current variable assignments mapping bound variable names to domain items
      */
     static evaluatePredicate(ast, domain, predicates, varEnv = {}) {
         if (!ast) return false;
@@ -160,21 +155,18 @@ export class Evaluator {
                 }
 
             case 'Forall':
-                // Must hold for ALL elements in domain
                 return domain.every(item => {
                     const newEnv = { ...varEnv, [ast.variable]: item };
                     return this.evaluatePredicate(ast.body, domain, predicates, newEnv);
                 });
 
             case 'Exists':
-                // Must hold for AT LEAST ONE element in domain
                 return domain.some(item => {
                     const newEnv = { ...varEnv, [ast.variable]: item };
                     return this.evaluatePredicate(ast.body, domain, predicates, newEnv);
                 });
 
             case 'Variable':
-                // Boolean constant or bound boolean variable
                 if (ast.name === 'True' || ast.name === 'T') return true;
                 if (ast.name === 'False' || ast.name === 'F') return false;
                 if (typeof varEnv[ast.name] === 'boolean') return varEnv[ast.name];
@@ -183,5 +175,49 @@ export class Evaluator {
             default:
                 throw new Error(`Invalid AST node type for predicate logic: ${ast.type}`);
         }
+    }
+
+    /**
+     * Evaluate Set Operations over array representations
+     */
+    static evaluateSetOperation(op, setA, setB) {
+        const a = Array.isArray(setA) ? setA : [];
+        const b = Array.isArray(setB) ? setB : [];
+
+        switch (op) {
+            case 'union':
+                return Array.from(new Set([...a, ...b])).sort();
+            case 'intersection':
+                return a.filter(x => b.includes(x)).sort();
+            case 'difference':
+                return a.filter(x => !b.includes(x)).sort();
+            case 'symmetric_difference':
+                return Array.from(new Set([
+                    ...a.filter(x => !b.includes(x)),
+                    ...b.filter(x => !a.includes(x))
+                ])).sort();
+            default:
+                throw new Error(`Unknown set operation: ${op}`);
+        }
+    }
+
+    /**
+     * Check Function properties (Injectivity, Surjectivity, Bijectivity) for domain -> codomain mapping
+     */
+    static checkFunctionProperties(domain, codomain, mapping) {
+        const values = domain.map(d => mapping[d]).filter(v => v !== undefined);
+        const uniqueValues = new Set(values);
+
+        const isInjective = uniqueValues.size === values.length;
+        const isSurjective = codomain.every(c => values.includes(c));
+        const isBijective = isInjective && isSurjective;
+
+        return {
+            isValidFunction: values.length === domain.length,
+            isInjective,
+            isSurjective,
+            isBijective,
+            range: Array.from(uniqueValues).sort()
+        };
     }
 }

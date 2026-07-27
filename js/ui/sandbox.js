@@ -9,14 +9,16 @@ export class SandboxView {
 
         containerEl.innerHTML = `
             <div class="sandbox-header">
-                <h2>🧪 Interactive Logic Sandbox</h2>
-                <p>Build, test, and analyze any custom Propositional or Predicate Logic expression!</p>
+                <h2>🧪 Interactive Discrete Math & Logic Sandbox</h2>
+                <p>Build, test, and analyze Propositional Formulas, Predicate Models, Set Operations, and Function Mappings!</p>
             </div>
 
             <div class="sandbox-tabs">
                 <button class="sandbox-tab-btn active" data-tab="truth-table-tool">Truth Table Generator</button>
                 <button class="sandbox-tab-btn" data-tab="equivalence-tool">Equivalence Checker</button>
                 <button class="sandbox-tab-btn" data-tab="predicate-tool">Predicate World Sandbox</button>
+                <button class="sandbox-tab-btn" data-tab="set-tool">Set Theory Visualizer</button>
+                <button class="sandbox-tab-btn" data-tab="function-tool">Function Mapping Inspector</button>
             </div>
 
             <!-- TRUTH TABLE TOOL -->
@@ -76,6 +78,51 @@ export class SandboxView {
                     </div>
                 </div>
             </div>
+
+            <!-- SET THEORY VISUALIZER TOOL -->
+            <div class="sandbox-panel" id="set-tool">
+                <div class="input-card">
+                    <label>Set A (comma-separated elements):</label>
+                    <input type="text" id="set-input-a" placeholder="e.g. 1, 2, 3, 4" value="1, 2, 3, 4">
+
+                    <label style="margin-top: 0.75rem;">Set B (comma-separated elements):</label>
+                    <input type="text" id="set-input-b" placeholder="e.g. 3, 4, 5, 6" value="3, 4, 5, 6">
+
+                    <label style="margin-top: 0.75rem;">Select Operation:</label>
+                    <select id="set-op-select" class="form-select">
+                        <option value="union">Union (A ∪ B)</option>
+                        <option value="intersection">Intersection (A ∩ B)</option>
+                        <option value="difference">Difference (A \\ B)</option>
+                        <option value="symmetric_difference">Symmetric Difference (A Δ B)</option>
+                    </select>
+
+                    <button class="btn btn-primary" id="btn-eval-set" style="margin-top: 1rem;">Compute Set Operation</button>
+                </div>
+
+                <div id="set-results" class="results-card hidden">
+                    <div id="set-status-box"></div>
+                </div>
+            </div>
+
+            <!-- FUNCTION MAPPING INSPECTOR TOOL -->
+            <div class="sandbox-panel" id="function-tool">
+                <div class="input-card">
+                    <label>Domain X (comma-separated):</label>
+                    <input type="text" id="fn-domain-input" placeholder="e.g. 1, 2, 3" value="1, 2, 3">
+
+                    <label style="margin-top: 0.75rem;">Codomain Y (comma-separated):</label>
+                    <input type="text" id="fn-codomain-input" placeholder="e.g. A, B, C, D" value="A, B, C, D">
+
+                    <label style="margin-top: 0.75rem;">Mapping f: X → Y (format: 1->A, 2->B, 3->C):</label>
+                    <input type="text" id="fn-mapping-input" placeholder="e.g. 1->A, 2->B, 3->C" value="1->A, 2->B, 3->C">
+
+                    <button class="btn btn-primary" id="btn-eval-fn" style="margin-top: 1rem;">Analyze Function Properties</button>
+                </div>
+
+                <div id="fn-results" class="results-card hidden">
+                    <div id="fn-status-box"></div>
+                </div>
+            </div>
         `;
 
         this.bindEvents(containerEl);
@@ -124,6 +171,14 @@ export class SandboxView {
 
         const predBtn = containerEl.querySelector('#btn-eval-pred');
         predBtn.addEventListener('click', () => this.runPredicateEval(containerEl, predWorldData));
+
+        // Set Theory Visualizer
+        const setBtn = containerEl.querySelector('#btn-eval-set');
+        setBtn.addEventListener('click', () => this.runSetEval(containerEl));
+
+        // Function Mapping Inspector
+        const fnBtn = containerEl.querySelector('#btn-eval-fn');
+        fnBtn.addEventListener('click', () => this.runFunctionEval(containerEl));
     }
 
     static escapeHTML(str) {
@@ -226,6 +281,91 @@ export class SandboxView {
         } catch (err) {
             evalBox.className = 'results-card status-danger';
             evalBox.innerHTML = `<p>⚠️ ${this.escapeHTML(err.message)}</p>`;
+        }
+    }
+
+    static runSetEval(containerEl) {
+        const strA = containerEl.querySelector('#set-input-a').value.trim();
+        const strB = containerEl.querySelector('#set-input-b').value.trim();
+        const op = containerEl.querySelector('#set-op-select').value;
+        const resultsCard = containerEl.querySelector('#set-results');
+        const statusBox = containerEl.querySelector('#set-status-box');
+
+        const setA = strA ? strA.split(',').map(s => s.trim()).filter(Boolean) : [];
+        const setB = strB ? strB.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+        try {
+            const resultSet = Evaluator.evaluateSetOperation(op, setA, setB);
+            resultsCard.classList.remove('hidden');
+
+            const opNames = {
+                union: 'A ∪ B (Union)',
+                intersection: 'A ∩ B (Intersection)',
+                difference: 'A \\ B (Difference)',
+                symmetric_difference: 'A Δ B (Symmetric Difference)'
+            };
+
+            const aOnly = setA.filter(x => !setB.includes(x));
+            const bOnly = setB.filter(x => !setA.includes(x));
+            const both = setA.filter(x => setB.includes(x));
+
+            statusBox.className = 'status-box status-success';
+            statusBox.innerHTML = `
+                <h3>Result for ${opNames[op] || op}</h3>
+                <p class="set-result-formula">Resulting Set: <code>{ ${resultSet.join(', ')} }</code> (Cardinality = ${resultSet.length})</p>
+                <div class="venn-breakdown" style="margin-top: 1rem; font-size: 0.9rem;">
+                    <div><strong>A Only ({ ${aOnly.join(', ')} })</strong></div>
+                    <div><strong>Shared A ∩ B ({ ${both.join(', ')} })</strong></div>
+                    <div><strong>B Only ({ ${bOnly.join(', ')} })</strong></div>
+                </div>
+            `;
+        } catch (err) {
+            resultsCard.classList.remove('hidden');
+            statusBox.className = 'status-box status-danger';
+            statusBox.innerHTML = `<p>⚠️ ${this.escapeHTML(err.message)}</p>`;
+        }
+    }
+
+    static runFunctionEval(containerEl) {
+        const strDomain = containerEl.querySelector('#fn-domain-input').value.trim();
+        const strCodomain = containerEl.querySelector('#fn-codomain-input').value.trim();
+        const strMapping = containerEl.querySelector('#fn-mapping-input').value.trim();
+        const resultsCard = containerEl.querySelector('#fn-results');
+        const statusBox = containerEl.querySelector('#fn-status-box');
+
+        const domain = strDomain ? strDomain.split(',').map(s => s.trim()).filter(Boolean) : [];
+        const codomain = strCodomain ? strCodomain.split(',').map(s => s.trim()).filter(Boolean) : [];
+        
+        const mapping = {};
+        if (strMapping) {
+            const pairs = strMapping.split(',').map(s => s.trim());
+            pairs.forEach(p => {
+                const parts = p.split('->').map(x => x.trim());
+                if (parts.length === 2) {
+                    mapping[parts[0]] = parts[1];
+                }
+            });
+        }
+
+        try {
+            const res = Evaluator.checkFunctionProperties(domain, codomain, mapping);
+            resultsCard.classList.remove('hidden');
+
+            statusBox.className = 'status-box status-success';
+            statusBox.innerHTML = `
+                <h3>Function Analysis Results</h3>
+                <ul class="fn-results-list" style="list-style: none; padding: 0; line-height: 1.8;">
+                    <li><strong>Valid Function:</strong> ${res.isValidFunction ? '✅ Yes' : '❌ No (Unmapped domain elements)'}</li>
+                    <li><strong>Injective (One-to-One):</strong> ${res.isInjective ? '✅ Yes (All outputs unique)' : '❌ No (Duplicate outputs mapped)'}</li>
+                    <li><strong>Surjective (Onto):</strong> ${res.isSurjective ? '✅ Yes (Range = Codomain)' : '❌ No (Uncovered codomain elements)'}</li>
+                    <li><strong>Bijective (Invertible):</strong> ${res.isBijective ? '🌟 Yes! Inverse f⁻¹ exists' : '❌ No'}</li>
+                    <li><strong>Range (Image):</strong> <code>{ ${res.range.join(', ')} }</code></li>
+                </ul>
+            `;
+        } catch (err) {
+            resultsCard.classList.remove('hidden');
+            statusBox.className = 'status-box status-danger';
+            statusBox.innerHTML = `<p>⚠️ ${this.escapeHTML(err.message)}</p>`;
         }
     }
 }

@@ -21,7 +21,7 @@ class LogicLairApp {
     }
 
     loadState() {
-        const saved = localStorage.getItem('logic_lair_user_state');
+        const saved = localStorage.getItem('discrete_math_realm_user_state') || localStorage.getItem('logic_lair_user_state');
         if (saved) {
             try { return JSON.parse(saved); } catch (e) {}
         }
@@ -34,7 +34,7 @@ class LogicLairApp {
     }
 
     saveState() {
-        localStorage.setItem('logic_lair_user_state', JSON.stringify(this.userState));
+        localStorage.setItem('discrete_math_realm_user_state', JSON.stringify(this.userState));
         this.renderHeaderStats();
     }
 
@@ -204,8 +204,20 @@ class LogicLairApp {
                     <span class="challenge-xp">⚡ +${ch.xp} XP</span>
                 </div>
                 <h3 class="challenge-title">Level ${this.currentChallengeIndex + 1}: ${ch.title}</h3>
-                <p class="challenge-prompt">${ch.prompt}</p>
         `;
+
+        if (ch.learningInfo) {
+            contentHtml += `
+                <div class="learning-info-card" style="background: rgba(6, 182, 212, 0.08); border-left: 4px solid var(--primary); padding: 1rem 1.25rem; border-radius: 8px; margin: 1rem 0;">
+                    <div style="font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>📖 Educational Context & Priming</span>
+                    </div>
+                    <div style="font-size: 0.95rem; line-height: 1.6; color: var(--text-main);">${ch.learningInfo}</div>
+                </div>
+            `;
+        }
+
+        contentHtml += `<p class="challenge-prompt" style="font-size: 1.1rem; font-weight: 600; margin: 1rem 0;">${ch.prompt}</p>`;
 
         if (ch.formula) {
             contentHtml += `<div class="formula-box">${ch.formula}</div>`;
@@ -393,8 +405,8 @@ class LogicLairApp {
 
         this.viewStats.innerHTML = `
             <div class="campaign-header">
-                <h2>🏆 Logic Lair Shrine & Achievements</h2>
-                <p>Track your mastery over formal propositional and first-order predicate logic.</p>
+                <h2>🏆 Discrete Math & Logic Realm Shrine</h2>
+                <p>Track your mastery over formal logic, set theory, function mappings, and infinite cardinalities.</p>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
@@ -429,23 +441,47 @@ class LogicLairApp {
                         <span style="font-size: 2rem;">⚖️</span>
                         <div>
                             <strong>De Morgan Master</strong>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by solving 10 logical equivalence challenges.</p>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by solving 10 equivalence challenges.</p>
                         </div>
                     </div>
 
-                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 25 ? '' : 'opacity: 0.4;'}">
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 30 ? '' : 'opacity: 0.4;'}">
                         <span style="font-size: 2rem;">🌐</span>
                         <div>
                             <strong>Quantifier Slayer</strong>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by mastering 25 First-Order Predicate challenges.</p>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by mastering 30 predicate challenges.</p>
                         </div>
                     </div>
 
-                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 50 ? '' : 'opacity: 0.4;'}">
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 60 ? '' : 'opacity: 0.4;'}">
+                        <span style="font-size: 2rem;">📐</span>
+                        <div>
+                            <strong>Set Theory Alchemist</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by conquering Set Theory challenges.</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 75 ? '' : 'opacity: 0.4;'}">
+                        <span style="font-size: 2rem;">🔄</span>
+                        <div>
+                            <strong>Mapping Master</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by mastering Injections & Surjections.</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 90 ? '' : 'opacity: 0.4;'}">
+                        <span style="font-size: 2rem;">♾️</span>
+                        <div>
+                            <strong>Infinity Conqueror</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by solving Cardinality & Cantor challenges.</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 100 ? '' : 'opacity: 0.4;'}">
                         <span style="font-size: 2rem;">👑</span>
                         <div>
-                            <strong>Grandmaster of the Lair</strong>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by solving 50+ logic challenges.</p>
+                            <strong>Discrete Math Realm Grandmaster</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by clearing all 100 challenges!</p>
                         </div>
                     </div>
                 </div>
