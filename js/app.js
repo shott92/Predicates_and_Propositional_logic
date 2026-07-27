@@ -5,6 +5,7 @@ import { LogicKeyboard } from './ui/keyboard.js';
 import { GridWorld } from './ui/grid-world.js';
 import { SoundEffects } from './ui/sound.js';
 import { SandboxView } from './ui/sandbox.js';
+import { VisualIntuitionEngine } from './ui/visual-intuition.js';
 
 class LogicLairApp {
     constructor() {
@@ -251,6 +252,12 @@ class LogicLairApp {
             `;
         }
 
+        // Add Manim Visual Intuition Container if applicable
+        const hasVisualGraphic = ['cat_limits', 'cat_derivatives', 'cat_integrals', 'cat_set_theory', 'cat_functions'].includes(ch.categoryId);
+        if (hasVisualGraphic) {
+            contentHtml += `<div id="ch-visual-intuition-container" style="margin: 1rem 0;"></div>`;
+        }
+
         contentHtml += `<p class="challenge-prompt" style="font-size: 1.1rem; font-weight: 600; margin: 1rem 0;">${ch.prompt}</p>`;
 
         if (ch.formula) {
@@ -296,6 +303,22 @@ class LogicLairApp {
         </div>`;
 
         containerEl.innerHTML = contentHtml;
+
+        // Render Visual Intuition Graphic
+        if (hasVisualGraphic) {
+            const visualBox = containerEl.querySelector('#ch-visual-intuition-container');
+            if (visualBox) {
+                if (ch.categoryId === 'cat_limits' || ch.categoryId === 'cat_derivatives') {
+                    VisualIntuitionEngine.renderTangentGraph(visualBox, 'x_squared', 1.5);
+                } else if (ch.categoryId === 'cat_integrals') {
+                    VisualIntuitionEngine.renderRiemannArea(visualBox, 0, 3, 8);
+                } else if (ch.categoryId === 'cat_set_theory') {
+                    VisualIntuitionEngine.renderVennDiagramSVG(visualBox, ['1', '2', '3', '4'], ['3', '4', '5', '6'], 'intersection');
+                } else if (ch.categoryId === 'cat_functions') {
+                    VisualIntuitionEngine.renderMappingGraphSVG(visualBox, ['1', '2', '3'], ['A', 'B', 'C', 'D'], { '1': 'A', '2': 'B', '3': 'C' });
+                }
+            }
+        }
 
         // Attach On-Screen Keyboard if applicable
         if (ch.type === 'equivalence_input') {

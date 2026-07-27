@@ -27,6 +27,7 @@ def main():
         os.path.join(root_dir, 'js', 'ui', 'keyboard.js'),
         os.path.join(root_dir, 'js', 'ui', 'grid-world.js'),
         os.path.join(root_dir, 'js', 'ui', 'sound.js'),
+        os.path.join(root_dir, 'js', 'ui', 'visual-intuition.js'),
         os.path.join(root_dir, 'js', 'ui', 'sandbox.js'),
         os.path.join(root_dir, 'js', 'app.js'),
     ]

@@ -789,4 +789,21 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* 3Blue1Brown / Manim Style Visual Intuition Card */
+.manim-card {
+    transition: all 0.3s ease;
+}
+
+.manim-card:hover {
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.25) !important;
+}
+
+.manim-x-slider, .riemann-n-slider {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+}
+
+
 
