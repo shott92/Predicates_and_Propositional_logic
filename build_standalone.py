@@ -46,8 +46,8 @@ def main():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discrete Math & Logic Realm - eLearning App</title>
-    <meta name="description" content="A super portable offline eLearning application for mastering Propositional & Predicate Logic, Set Theory, Functions & Mappings (Injections/Surjections), and Infinite Sets & Cardinality. Shareable with zero prerequisites.">
+    <title>OmniMath Realm - eLearning App</title>
+    <meta name="description" content="A super portable offline eLearning application for mastering Propositional & Predicate Logic, Set Theory, Functions & Mappings, Cardinality & Infinities, and Calculus (Limits, Derivatives, Integrals). Shareable with zero prerequisites.">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,8 +64,8 @@ def main():
         <div class="logo-container">
             <div class="logo-icon">⚡</div>
             <div class="logo-text">
-                <h1>Discrete Math & Logic Realm</h1>
-                <p>Master Logic, Set Theory, Mappings & Infinities</p>
+                <h1>OmniMath Realm</h1>
+                <p>Master Logic, Sets, Infinities & Calculus</p>
             </div>
         </div>
 
@@ -79,7 +79,7 @@ def main():
             </div>
             <div class="stat-pill" title="Challenges Solved">
                 <span class="icon">🏆</span>
-                <span id="stat-completed-val">0 / 100</span>
+                <span id="stat-completed-val">0 / 130</span>
             </div>
             <button class="sound-toggle-btn" id="btn-sound-toggle" title="Toggle Sound Effects">🔊</button>
         </div>
@@ -98,8 +98,8 @@ def main():
         <!-- VIEW 1: CAMPAIGN MAP -->
         <section id="view-campaign" class="view-panel active">
             <div class="campaign-header">
-                <h2>Discrete Mathematics & Logic Campaign</h2>
-                <p>Conquer 10 realms spanning Propositional Logic, Predicates, Set Theory, Function Injections/Surjections, and Infinite Cardinalities!</p>
+                <h2>OmniMath Mathematics & Logic Campaign</h2>
+                <p>Conquer 13 biomes spanning Propositional Logic, Predicates, Set Theory, Mappings, Infinite Cardinalities, Limits, Derivatives, and Integrals!</p>
             </div>
             <div class="categories-grid"></div>
         </section>

@@ -21,7 +21,9 @@ class LogicLairApp {
     }
 
     loadState() {
-        const saved = localStorage.getItem('discrete_math_realm_user_state') || localStorage.getItem('logic_lair_user_state');
+        const saved = localStorage.getItem('omnimath_realm_user_state') || 
+                      localStorage.getItem('discrete_math_realm_user_state') || 
+                      localStorage.getItem('logic_lair_user_state');
         if (saved) {
             try { return JSON.parse(saved); } catch (e) {}
         }
@@ -34,7 +36,7 @@ class LogicLairApp {
     }
 
     saveState() {
-        localStorage.setItem('discrete_math_realm_user_state', JSON.stringify(this.userState));
+        localStorage.setItem('omnimath_realm_user_state', JSON.stringify(this.userState));
         this.renderHeaderStats();
     }
 
@@ -83,21 +85,44 @@ class LogicLairApp {
         });
 
         if (viewId === 'campaign') {
+            this.resetBiomeTheme();
             this.renderCampaignMap();
             if (this.viewCampaign) this.viewCampaign.classList.add('active');
         } else if (viewId === 'workspace') {
             if (!this.currentCategory) {
                 this.currentCategory = CATEGORIES[0];
             }
+            this.applyBiomeTheme(this.currentCategory);
             this.renderWorkspace();
             if (this.viewWorkspace) this.viewWorkspace.classList.add('active');
         } else if (viewId === 'sandbox') {
+            this.resetBiomeTheme();
             SandboxView.init(this.viewSandbox);
             if (this.viewSandbox) this.viewSandbox.classList.add('active');
         } else if (viewId === 'stats') {
+            this.resetBiomeTheme();
             this.renderStatsView();
             if (this.viewStats) this.viewStats.classList.add('active');
         }
+    }
+
+    applyBiomeTheme(cat) {
+        if (!cat) return;
+        document.documentElement.style.setProperty('--primary', cat.color);
+        document.documentElement.style.setProperty('--border-glow', `${cat.color}66`);
+        document.body.style.backgroundImage = `
+            radial-gradient(at 10% 10%, ${cat.color}22 0px, transparent 50%),
+            radial-gradient(at 90% 80%, rgba(139, 92, 246, 0.15) 0px, transparent 50%)
+        `;
+    }
+
+    resetBiomeTheme() {
+        document.documentElement.style.setProperty('--primary', '#06b6d4');
+        document.documentElement.style.setProperty('--border-glow', 'rgba(6, 182, 212, 0.4)');
+        document.body.style.backgroundImage = `
+            radial-gradient(at 10% 10%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
+            radial-gradient(at 90% 80%, rgba(139, 92, 246, 0.12) 0px, transparent 50%)
+        `;
     }
 
     renderHeaderStats() {
@@ -158,6 +183,8 @@ class LogicLairApp {
     renderWorkspace() {
         if (!this.viewWorkspace || !this.currentCategory) return;
 
+        this.applyBiomeTheme(this.currentCategory);
+
         const catChallenges = CHALLENGES.filter(c => c.categoryId === this.currentCategory.id);
         const sidebarList = this.viewWorkspace.querySelector('.challenge-list');
         const mainArea = this.viewWorkspace.querySelector('.challenge-main-area');
@@ -198,18 +225,25 @@ class LogicLairApp {
         this.activeWorldState = ch.world ? JSON.parse(JSON.stringify(ch.world)) : null;
 
         let contentHtml = `
-            <div class="challenge-card">
-                <div class="challenge-meta">
-                    <span class="challenge-badge">${this.currentCategory.name}</span>
-                    <span class="challenge-xp">⚡ +${ch.xp} XP</span>
+            <div class="biome-banner" style="background: linear-gradient(135deg, ${this.currentCategory.color}22, rgba(15, 23, 42, 0.8)); border: 1px solid ${this.currentCategory.color}44; padding: 0.75rem 1.25rem; border-radius: 12px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span style="font-size: 1.6rem;">${this.currentCategory.icon}</span>
+                    <div>
+                        <div style="font-weight: 700; color: ${this.currentCategory.color}; font-size: 0.95rem;">${this.currentCategory.name} Realm</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">${this.currentCategory.description}</div>
+                    </div>
                 </div>
+                <span class="challenge-xp" style="background: ${this.currentCategory.color}22; color: ${this.currentCategory.color}; border: 1px solid ${this.currentCategory.color}66; padding: 0.3rem 0.75rem; border-radius: 20px; font-weight: 700;">⚡ +${ch.xp} XP</span>
+            </div>
+
+            <div class="challenge-card">
                 <h3 class="challenge-title">Level ${this.currentChallengeIndex + 1}: ${ch.title}</h3>
         `;
 
         if (ch.learningInfo) {
             contentHtml += `
-                <div class="learning-info-card" style="background: rgba(6, 182, 212, 0.08); border-left: 4px solid var(--primary); padding: 1rem 1.25rem; border-radius: 8px; margin: 1rem 0;">
-                    <div style="font-weight: 700; color: var(--primary); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem;">
+                <div class="learning-info-card" style="background: ${this.currentCategory.color}12; border-left: 4px solid ${this.currentCategory.color}; padding: 1rem 1.25rem; border-radius: 8px; margin: 1rem 0;">
+                    <div style="font-weight: 700; color: ${this.currentCategory.color}; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem;">
                         <span>📖 Educational Context & Priming</span>
                     </div>
                     <div style="font-size: 0.95rem; line-height: 1.6; color: var(--text-main);">${ch.learningInfo}</div>
@@ -405,8 +439,8 @@ class LogicLairApp {
 
         this.viewStats.innerHTML = `
             <div class="campaign-header">
-                <h2>🏆 Discrete Math & Logic Realm Shrine</h2>
-                <p>Track your mastery over formal logic, set theory, function mappings, and infinite cardinalities.</p>
+                <h2>🏆 OmniMath Realm Shrine & Badges</h2>
+                <p>Track your mastery over Logic, Set Theory, Mappings, Infinities, and Calculus.</p>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
@@ -461,14 +495,6 @@ class LogicLairApp {
                         </div>
                     </div>
 
-                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 75 ? '' : 'opacity: 0.4;'}">
-                        <span style="font-size: 2rem;">🔄</span>
-                        <div>
-                            <strong>Mapping Master</strong>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by mastering Injections & Surjections.</p>
-                        </div>
-                    </div>
-
                     <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 90 ? '' : 'opacity: 0.4;'}">
                         <span style="font-size: 2rem;">♾️</span>
                         <div>
@@ -477,11 +503,27 @@ class LogicLairApp {
                         </div>
                     </div>
 
-                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 100 ? '' : 'opacity: 0.4;'}">
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 110 ? '' : 'opacity: 0.4;'}">
+                        <span style="font-size: 2rem;">🌌</span>
+                        <div>
+                            <strong>Limit Pathfinder</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by mastering Limits & Continuity.</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 120 ? '' : 'opacity: 0.4;'}">
+                        <span style="font-size: 2rem;">📈</span>
+                        <div>
+                            <strong>Derivative Speedster</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by conquering Differential Calculus.</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-pill" style="padding: 1rem; justify-content: flex-start; gap: 1rem; ${completedCh >= 130 ? '' : 'opacity: 0.4;'}">
                         <span style="font-size: 2rem;">👑</span>
                         <div>
-                            <strong>Discrete Math Realm Grandmaster</strong>
-                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by clearing all 100 challenges!</p>
+                            <strong>OmniMath Overlord</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);">Unlocked by clearing all 130 challenges across all realms!</p>
                         </div>
                     </div>
                 </div>

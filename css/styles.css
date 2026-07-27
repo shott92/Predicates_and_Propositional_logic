@@ -771,3 +771,22 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Realm Biome Environment Transition System */
+body {
+    transition: background-color 0.5s ease, background-image 0.5s ease;
+}
+
+.app-header {
+    transition: border-bottom 0.5s ease;
+}
+
+.biome-banner {
+    animation: biomeFadeIn 0.4s ease-out;
+}
+
+@keyframes biomeFadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+

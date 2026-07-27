@@ -202,7 +202,7 @@ export class Evaluator {
     }
 
     /**
-     * Check Function properties (Injectivity, Surjectivity, Bijectivity) for domain -> codomain mapping
+     * Check Function properties (Injectivity, Surjectivity, Bijectivity)
      */
     static checkFunctionProperties(domain, codomain, mapping) {
         const values = domain.map(d => mapping[d]).filter(v => v !== undefined);
@@ -219,5 +219,48 @@ export class Evaluator {
             isBijective,
             range: Array.from(uniqueValues).sort()
         };
+    }
+
+    /**
+     * Evaluate Polynomial Limit: lim_{x -> targetX} c * x^n
+     */
+    static evaluatePolynomialLimit(coef, power, targetX) {
+        const c = parseFloat(coef) || 0;
+        const n = parseFloat(power) || 0;
+        const x = parseFloat(targetX) || 0;
+        return c * Math.pow(x, n);
+    }
+
+    /**
+     * Evaluate Power Rule Derivative: d/dx [ c * x^n ] = (c * n) * x^(n - 1)
+     */
+    static evaluatePowerRuleDerivative(coef, power) {
+        const c = parseFloat(coef) || 0;
+        const n = parseFloat(power) || 0;
+        const newCoef = c * n;
+        const newPower = n - 1;
+        return { coef: newCoef, power: newPower };
+    }
+
+    /**
+     * Evaluate Definite Integral for Power Rule: int_a^b (c * x^n) dx = [c/(n+1) * x^(n+1)]_a^b
+     */
+    static evaluateDefiniteIntegralPowerRule(coef, power, a, b) {
+        const c = parseFloat(coef) || 0;
+        const n = parseFloat(power) || 0;
+        const lower = parseFloat(a) || 0;
+        const upper = parseFloat(b) || 0;
+
+        if (n === -1) {
+            // Special case ln(x)
+            return c * (Math.log(Math.abs(upper)) - Math.log(Math.abs(lower)));
+        }
+
+        const newPower = n + 1;
+        const newCoef = c / newPower;
+        const valUpper = newCoef * Math.pow(upper, newPower);
+        const valLower = newCoef * Math.pow(lower, newPower);
+
+        return valUpper - valLower;
     }
 }

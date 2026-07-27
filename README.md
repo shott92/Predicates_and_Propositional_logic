@@ -1,6 +1,6 @@
-# Discrete Math & Logic Realm ⚡
+# OmniMath Realm ⚡
 
-An interactive, zero-dependency, hyper-optimised **eLearning web application** for practicing and mastering **Propositional Logic**, **Predicate Logic**, **Set Theory**, **Functions & Mappings (Injections & Surjections)**, and **Cardinality & Infinite Sets**.
+An interactive, zero-dependency, hyper-optimised **eLearning web application** for practicing and mastering **Propositional Logic**, **Predicate Logic**, **Set Theory**, **Functions & Mappings**, **Cardinality & Infinite Sets**, and **Calculus (Limits, Derivatives, Integrals)**.
 
 ---
 
@@ -18,69 +18,81 @@ This application operates **100% offline in a single self-contained HTML file** 
 
 ---
 
-## 🧠 Hyper-Optimised Learning-First & Gamified Approach
+## 🌌 Realm Biome Environment Progression Engine
 
-Designed according to established principles of educational psychology and cognitive science to maximize comprehension, retention, and interaction:
+Experience a dynamic visual journey across mathematical realms! Rather than static themes, OmniMath Realm features an extensible **Biome Progression System**:
+
+- **Dynamic Biome Aesthetics**: As you select or level up through categories, the UI dynamically transforms its ambient background gradient, theme glow, environment banner, and level cards.
+- **13 Distinct Environmental Biomes**:
+  - ⚡ **Cyber Synth Gates** (Propositional Foundations)
+  - ⚖️ **Equivalence Citadel** (Transformation Laws)
+  - 🔮 **Void Sanctum** (Tautologies & SAT)
+  - 📜 **Deduction Archives** (Rules of Inference)
+  - 🌐 **Universal Observatory** (Predicates & Quantifiers)
+  - 🧱 **Vector Grid Matrix** (Visual Predicate Realm)
+  - 📐 **Venn Crystal Caverns** (Set Theory & Power Sets)
+  - 🔄 **Quantum Nexus** (Injections & Surjections)
+  - ♾️ **Continuum Abyss** (Cardinality & Infinities)
+  - 👑 **Paradox Spire** (Knights, Paradoxes & Antinomies)
+  - 🌌 **Infinitesimal Frontier** (Limits & Continuity) *(NEW)*
+  - 📈 **Flux Kinetics Core** (Differential Calculus & Derivatives) *(NEW)*
+  - ∫ **Continuum Accumulator** (Integral Calculus & Anti-derivatives) *(NEW)*
+
+---
+
+## 🧠 Hyper-Optimised Learning-First & Gamified Approach
 
 ### 1. Pedagogical Scaffolding & Faded Guidance (Zone of Proximal Development)
 - **Early Levels (Scaffolded Priming)**: Each category begins with dedicated educational context (`learningInfo`), intuitive real-world analogies, formal definitions, and step-by-step worked examples.
 - **Mid Levels (Guided Practice)**: Assistance is gradually faded as learners apply principles to structured problem solving with targeted hints.
-- **Late Levels (Independent Mastery)**: Learners solve advanced logic proofs, set identity derivations, function analysis, and infinity paradoxes unassisted.
+- **Late Levels (Independent Mastery)**: Learners solve advanced logic proofs, set identity derivations, function analysis, limit evaluations, derivative rules, and integral calculations unassisted.
 
 ### 2. Dual Coding & Visual Models
-- Combines symbolic mathematical rigor ($\forall, \exists, \subseteq, \cup, \cap, \to$) with intuitive visual interactives:
+- Combines symbolic mathematical rigor ($\forall, \exists, \subseteq, \cup, \cap, \lim_{x \to a}, \frac{d}{dx}, \int$) with intuitive visual interactives:
   - **Venn Diagram Visualizer** for Set Theory.
   - **Arrow Mapping Inspector** for Injective, Surjective, and Bijective functions.
   - **Blocks World Grid** for Predicate Logic models.
   - **Truth Table Generator** for Boolean Logic.
-
-### 3. Gamification Mechanics (Self-Determination Theory)
-- **100 Progressive Challenges** across 10 distinct curriculum realms.
-- **XP Progression & Leveling**: Earn experience points for correct answers and problem solving.
-- **Daily Streaks & Achievement Badges**: Track learning consistency and unlock trophies.
-- **Audio-Visual Micro-Interactions**: Web Audio API synthesized sound feedback for instant gratification.
+  - **Calculus Visualizer** for Limits, Tangent Lines, and Definite Integral Riemann Areas.
 
 ---
 
-## 🌟 Curriculum & Category Breakdown (100 Levels)
+## 🌟 Curriculum & Category Breakdown (130 Levels)
 
 1. **Category 1: Propositional Foundations** (10 Levels)
-   - Connectives ($\land, \lor, \neg, \to, \leftrightarrow, \oplus$), truth values, and formula evaluation.
 2. **Category 2: Equivalence & Laws** (10 Levels)
-   - De Morgan's Laws, Implication Elimination, Contrapositive, Distributivity, and Double Negation.
 3. **Category 3: Tautologies, Contradictions & SAT** (10 Levels)
-   - Formula classification, satisfiability (SAT) tests, and truth table analysis.
 4. **Category 4: Rules of Inference & Proofs** (10 Levels)
-   - Modus Ponens, Modus Tollens, Disjunctive Syllogism, Resolution, and deduction proofs.
 5. **Category 5: Predicates & Quantifiers** (10 Levels)
-   - Translating natural language to First-Order Logic using $\forall$ (for all) and $\exists$ (there exists).
 6. **Category 6: Visual Predicate Realm** (10 Levels)
-   - Interactive grid world models (Blocks World) evaluating shape properties (`Red(x)`, `Square(x)`, `LeftOf(x,y)`).
-7. **Category 7: Set Theory Foundations & Operations** *(NEW)* (10 Levels)
-   - Sets, element membership ($\in$), empty set ($\emptyset$), subsets ($\subseteq$), power sets ($\mathcal{P}(S)$), union ($\cup$), intersection ($\cap$), difference ($\setminus$), and De Morgan's Set Laws.
-8. **Category 8: Functions, Injections & Surjections** *(NEW)* (10 Levels)
-   - Domain, codomain, range, **Injective** (one-to-one) functions, **Surjective** (onto) functions, **Bijective** functions, inverse functions ($f^{-1}$), and the Pigeonhole Principle.
-9. **Category 9: Cardinality & Infinite Sets** *(NEW)* (10 Levels)
-   - Finite set cardinality ($|A|$), Inclusion-Exclusion, countably infinite sets ($\aleph_0$), Hilbert's Grand Hotel Paradox, Cantor's Diagonal Argument, and Cantor's Theorem ($|A| < |\mathcal{P}(A)|$).
-10. **Category 10: The Master Realm: Paradoxes & Antinomies** (10 Levels)
-    - Knights & Knaves riddles, Liar Paradox, Russell's Paradox ($\{x \mid x \notin x\}$), and Cantor's Paradox.
+7. **Category 7: Set Theory Foundations & Operations** (10 Levels)
+8. **Category 8: Functions, Injections & Surjections** (10 Levels)
+9. **Category 9: Cardinality & Infinite Sets** (10 Levels)
+10. **Category 10: Master Realm: Paradoxes & Antinomies** (10 Levels)
+11. **Category 11: Limits & Continuity** *(NEW)* (10 Levels)
+    - Limits ($\lim_{x \to a} f(x)$), left/right limits, algebraic simplification ($0/0$), limits at infinity, Squeeze Theorem, and continuity.
+12. **Category 12: Differential Calculus & Derivatives** *(NEW)* (10 Levels)
+    - Derivative as rate of change, Power Rule ($n x^{n-1}$), Product Rule, Quotient Rule, Chain Rule, exponential/trig derivatives, and tangent lines.
+13. **Category 13: Integral Calculus & Anti-derivatives** *(NEW)* (10 Levels)
+    - Anti-derivatives, Indefinite Integrals ($\int x^n dx$), Fundamental Theorem of Calculus, Definite Integrals, $u$-substitution, Integration by Parts, and area between curves.
 
 ---
 
 ## 🧪 Interactive Multi-Tool Sandbox
 
-Explore discrete mathematics freely with 5 interactive tools:
-- **Truth Table Generator**: Input any propositional formula to generate complete truth tables.
-- **Equivalence Checker**: Compare two complex formulas to verify logical equivalence.
-- **Predicate World Sandbox**: Create custom grid worlds and evaluate quantified predicate formulas.
-- **Set Theory & Venn Visualizer**: Perform set operations ($\cup, \cap, \setminus, \triangle$) interactively.
-- **Function Mapping Inspector**: Map elements between sets and test for injectivity, surjectivity, and bijectivity in real-time.
+Explore mathematics freely with 6 interactive tools:
+- **Truth Table Generator**
+- **Equivalence Checker**
+- **Predicate World Sandbox**
+- **Set Theory & Venn Visualizer**
+- **Function Mapping Inspector**
+- **Calculus & Rate of Change Visualizer** *(NEW)*
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: Standard HTML5, CSS Custom Properties (Deep Dark Cyber Gothic Aesthetic), Vanilla JS (ES6+).
-- **Audio Engine**: Web Audio API (zero external sound files required).
-- **Storage**: `localStorage` automatic progress persistence.
+- **Frontend**: Standard HTML5, CSS Custom Properties (Dynamic Biome Color System), Vanilla JS (ES6+).
+- **Audio Engine**: Web Audio API synthesized sounds.
+- **Storage**: `localStorage` automatic progress persistence (`omnimath_realm_user_state`).
 - **Dependencies**: 0 external libraries or npm packages required.

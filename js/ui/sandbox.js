@@ -9,8 +9,8 @@ export class SandboxView {
 
         containerEl.innerHTML = `
             <div class="sandbox-header">
-                <h2>🧪 Interactive Discrete Math & Logic Sandbox</h2>
-                <p>Build, test, and analyze Propositional Formulas, Predicate Models, Set Operations, and Function Mappings!</p>
+                <h2>🧪 Interactive OmniMath Sandbox</h2>
+                <p>Build, test, and analyze Propositional Logic, Predicates, Sets, Mappings, and Calculus!</p>
             </div>
 
             <div class="sandbox-tabs">
@@ -19,6 +19,7 @@ export class SandboxView {
                 <button class="sandbox-tab-btn" data-tab="predicate-tool">Predicate World Sandbox</button>
                 <button class="sandbox-tab-btn" data-tab="set-tool">Set Theory Visualizer</button>
                 <button class="sandbox-tab-btn" data-tab="function-tool">Function Mapping Inspector</button>
+                <button class="sandbox-tab-btn" data-tab="calculus-tool">Calculus & Rates Visualizer</button>
             </div>
 
             <!-- TRUTH TABLE TOOL -->
@@ -123,6 +124,53 @@ export class SandboxView {
                     <div id="fn-status-box"></div>
                 </div>
             </div>
+
+            <!-- CALCULUS & RATES VISUALIZER TOOL -->
+            <div class="sandbox-panel" id="calculus-tool">
+                <div class="input-card">
+                    <label>Polynomial Term <code>c · xⁿ</code> (Enter Coefficient c and Exponent n):</label>
+                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 120px;">
+                            <label style="font-size: 0.85rem;">Coefficient (c):</label>
+                            <input type="number" id="calc-coef" value="3" step="any">
+                        </div>
+                        <div style="flex: 1; min-width: 120px;">
+                            <label style="font-size: 0.85rem;">Exponent (n):</label>
+                            <input type="number" id="calc-power" value="2" step="any">
+                        </div>
+                    </div>
+
+                    <label style="margin-top: 1rem;">Select Calculus Analysis:</label>
+                    <select id="calc-mode-select" class="form-select">
+                        <option value="derivative">Power Rule Derivative: d/dx [c · xⁿ]</option>
+                        <option value="limit">Limit at Point: lim_{x → a} (c · xⁿ)</option>
+                        <option value="integral">Definite Integral Area: ∫ₐᵇ (c · xⁿ) dx</option>
+                    </select>
+
+                    <div id="calc-extra-params" style="margin-top: 1rem;">
+                        <div id="calc-param-point">
+                            <label style="font-size: 0.85rem;">Target Point (a):</label>
+                            <input type="number" id="calc-target-x" value="4" step="any">
+                        </div>
+                        <div id="calc-param-bounds" class="hidden" style="display: flex; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <label style="font-size: 0.85rem;">Lower Bound (a):</label>
+                                <input type="number" id="calc-bound-a" value="0" step="any">
+                            </div>
+                            <div style="flex: 1;">
+                                <label style="font-size: 0.85rem;">Upper Bound (b):</label>
+                                <input type="number" id="calc-bound-b" value="3" step="any">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="btn-eval-calc" style="margin-top: 1rem;">Compute Calculus Result</button>
+                </div>
+
+                <div id="calc-results" class="results-card hidden">
+                    <div id="calc-status-box"></div>
+                </div>
+            </div>
         `;
 
         this.bindEvents(containerEl);
@@ -179,6 +227,33 @@ export class SandboxView {
         // Function Mapping Inspector
         const fnBtn = containerEl.querySelector('#btn-eval-fn');
         fnBtn.addEventListener('click', () => this.runFunctionEval(containerEl));
+
+        // Calculus Visualizer Mode Switch
+        const calcModeSelect = containerEl.querySelector('#calc-mode-select');
+        const paramPoint = containerEl.querySelector('#calc-param-point');
+        const paramBounds = containerEl.querySelector('#calc-param-bounds');
+
+        if (calcModeSelect) {
+            calcModeSelect.addEventListener('change', () => {
+                const mode = calcModeSelect.value;
+                if (mode === 'integral') {
+                    paramPoint.classList.add('hidden');
+                    paramBounds.classList.remove('hidden');
+                } else if (mode === 'limit') {
+                    paramPoint.classList.remove('hidden');
+                    paramBounds.classList.add('hidden');
+                } else {
+                    paramPoint.classList.add('hidden');
+                    paramBounds.classList.add('hidden');
+                }
+            });
+        }
+
+        // Calculus Visualizer Compute
+        const calcBtn = containerEl.querySelector('#btn-eval-calc');
+        if (calcBtn) {
+            calcBtn.addEventListener('click', () => this.runCalculusEval(containerEl));
+        }
     }
 
     static escapeHTML(str) {
@@ -362,6 +437,51 @@ export class SandboxView {
                     <li><strong>Range (Image):</strong> <code>{ ${res.range.join(', ')} }</code></li>
                 </ul>
             `;
+        } catch (err) {
+            resultsCard.classList.remove('hidden');
+            statusBox.className = 'status-box status-danger';
+            statusBox.innerHTML = `<p>⚠️ ${this.escapeHTML(err.message)}</p>`;
+        }
+    }
+
+    static runCalculusEval(containerEl) {
+        const coef = parseFloat(containerEl.querySelector('#calc-coef').value) || 0;
+        const power = parseFloat(containerEl.querySelector('#calc-power').value) || 0;
+        const mode = containerEl.querySelector('#calc-mode-select').value;
+        const resultsCard = containerEl.querySelector('#calc-results');
+        const statusBox = containerEl.querySelector('#calc-status-box');
+
+        try {
+            resultsCard.classList.remove('hidden');
+            statusBox.className = 'status-box status-success';
+
+            if (mode === 'derivative') {
+                const res = Evaluator.evaluatePowerRuleDerivative(coef, power);
+                const formulaStr = `${coef}x^${power}`;
+                const derivStr = `${res.coef}x^${res.power}`;
+                statusBox.innerHTML = `
+                    <h3>📈 Power Rule Derivative</h3>
+                    <p>Function: <code>f(x) = ${formulaStr}</code></p>
+                    <p style="margin-top: 0.5rem; font-size: 1.1rem; color: #84cc16;">Derivative: <code>f'(x) = ${derivStr}</code></p>
+                `;
+            } else if (mode === 'limit') {
+                const targetX = parseFloat(containerEl.querySelector('#calc-target-x').value) || 0;
+                const limitVal = Evaluator.evaluatePolynomialLimit(coef, power, targetX);
+                statusBox.innerHTML = `
+                    <h3>🌌 Limit Evaluation</h3>
+                    <p>Formula: <code>lim_{x → ${targetX}} (${coef}x^${power})</code></p>
+                    <p style="margin-top: 0.5rem; font-size: 1.1rem; color: #f59e0b;">Limit Value L = <strong>${limitVal}</strong></p>
+                `;
+            } else if (mode === 'integral') {
+                const a = parseFloat(containerEl.querySelector('#calc-bound-a').value) || 0;
+                const b = parseFloat(containerEl.querySelector('#calc-bound-b').value) || 0;
+                const areaVal = Evaluator.evaluateDefiniteIntegralPowerRule(coef, power, a, b);
+                statusBox.innerHTML = `
+                    <h3>∫ Definite Integral (Net Area)</h3>
+                    <p>Integral: <code>∫_{${a}}^{${b}} (${coef}x^${power}) dx</code></p>
+                    <p style="margin-top: 0.5rem; font-size: 1.1rem; color: #6366f1;">Net Area = <strong>${areaVal.toFixed(4)}</strong></p>
+                `;
+            }
         } catch (err) {
             resultsCard.classList.remove('hidden');
             statusBox.className = 'status-box status-danger';
