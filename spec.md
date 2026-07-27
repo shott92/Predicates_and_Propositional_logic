@@ -2,7 +2,7 @@
 
 ## Architecture Overview
 
-**OmniMath Realm** is a zero-dependency, modern single-page eLearning web application designed around hyper-optimised pedagogical principles, gamification mechanics, and a dynamic **Realm Biome Environment Progression Visual Engine**. Built using standard HTML5, CSS custom properties, and ES6 JavaScript, the app operates 100% offline and can be executed either as a modular ES6 project or as a single portable HTML distribution file (`index.html` / `PropNPredsLogicLair.html`).
+**OmniMath Realm** is a zero-dependency, modern single-page eLearning web application designed around hyper-optimised pedagogical principles, gamification mechanics, and a dynamic **Realm Biome Environment Progression Visual Engine**. Built using standard HTML5, CSS custom properties, and ES6 JavaScript, the app operates 100% offline and can be executed either as a modular ES6 project or as a single portable HTML distribution file (`index.html` / `OmniMathRealm.html`).
 
 ---
 

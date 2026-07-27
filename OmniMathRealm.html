@@ -803,6 +803,23 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* 3Blue1Brown / Manim Style Visual Intuition Card */
+.manim-card {
+    transition: all 0.3s ease;
+}
+
+.manim-card:hover {
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.25) !important;
+}
+
+.manim-x-slider, .riemann-n-slider {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+}
+
+
 
 
     </style>
@@ -3613,6 +3630,399 @@ class SoundEffects {
     }
 }
 
+/* --- MODULE: visual-intuition.js --- */
+/**
+ * Visual Intuition Engine for OmniMath Realm
+ * 3Blue1Brown (Manim) & Brilliant.org inspired interactive SVG/Canvas math graphics
+ */
+
+class VisualIntuitionEngine {
+    /**
+     * Render Interactive Tangent Line & Derivative Slope Graph (Manim Style)
+     */
+    static renderTangentGraph(container, fnType = 'x_squared', initialX = 1.5) {
+        if (!container) return;
+
+        container.innerHTML = `
+            <div class="manim-card" style="background: #0d1117; border: 1px solid rgba(6, 182, 212, 0.4); border-radius: 12px; padding: 1rem; color: #f8fafc; box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <div style="font-weight: 700; color: #38bdf8; font-family: var(--font-heading); display: flex; align-items: center; gap: 0.5rem;">
+                        <span>📈 Manim Visual Intuition: Instantaneous Rate of Change</span>
+                    </div>
+                    <span class="manim-readout" style="background: rgba(132, 204, 22, 0.2); color: #a3e635; border: 1px solid #84cc16; padding: 0.2rem 0.6rem; border-radius: 6px; font-family: var(--font-code); font-size: 0.85rem; font-weight: 700;">f'(x) = Slope</span>
+                </div>
+
+                <div style="position: relative; width: 100%; height: 220px;">
+                    <canvas class="manim-canvas" style="width: 100%; height: 100%; display: block; border-radius: 8px; background: #06090e; border: 1px solid rgba(255, 255, 255, 0.08);"></canvas>
+                </div>
+
+                <div style="margin-top: 0.75rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                    <label style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">Slide Position x:</label>
+                    <input type="range" class="manim-x-slider" min="-3" max="3" step="0.05" value="${initialX}" style="flex: 1; accent-color: #84cc16; cursor: pointer;">
+                    <div class="manim-val-display" style="font-family: var(--font-code); font-weight: 700; color: #f8fafc; min-width: 140px; text-align: right;"></div>
+                </div>
+            </div>
+        `;
+
+        const canvas = container.querySelector('.manim-canvas');
+        const slider = container.querySelector('.manim-x-slider');
+        const valDisplay = container.querySelector('.manim-val-display');
+
+        const draw = () => {
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            // Clear background
+            ctx.fillStyle = '#06090e';
+            ctx.fillRect(0, 0, width, height);
+
+            // Coordinate origin
+            const originX = width / 2;
+            const originY = height / 2 + 30;
+            const scaleX = width / 8;
+            const scaleY = height / 8;
+
+            // Grid lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+            ctx.lineWidth = 1;
+            for (let x = -4; x <= 4; x += 1) {
+                const cx = originX + x * scaleX;
+                ctx.beginPath();
+                ctx.moveTo(cx, 0);
+                ctx.lineTo(cx, height);
+                ctx.stroke();
+            }
+            for (let y = -4; y <= 4; y += 1) {
+                const cy = originY - y * scaleY;
+                ctx.beginPath();
+                ctx.moveTo(0, cy);
+                ctx.lineTo(width, cy);
+                ctx.stroke();
+            }
+
+            // Axes
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, originY);
+            ctx.lineTo(width, originY);
+            ctx.moveTo(originX, 0);
+            ctx.lineTo(originX, height);
+            ctx.stroke();
+
+            // Function evaluator: f(x) = x^2 / 2
+            const f = (x) => {
+                if (fnType === 'sin') return Math.sin(x) * 1.5;
+                if (fnType === 'cubic') return 0.2 * (x * x * x) - x;
+                return 0.5 * x * x;
+            };
+
+            const df = (x) => {
+                if (fnType === 'sin') return Math.cos(x) * 1.5;
+                if (fnType === 'cubic') return 0.6 * (x * x) - 1;
+                return x;
+            };
+
+            // Draw Curve (Glowing Cyan)
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#06b6d4';
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            let first = true;
+            for (let px = -4; px <= 4; px += 0.05) {
+                const py = f(px);
+                const cx = originX + px * scaleX;
+                const cy = originY - py * scaleY;
+                if (first) { ctx.moveTo(cx, cy); first = false; }
+                else { ctx.lineTo(cx, cy); }
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Target X position from slider
+            const curX = parseFloat(slider.value);
+            const curY = f(curX);
+            const slope = df(curX);
+
+            const ptX = originX + curX * scaleX;
+            const ptY = originY - curY * scaleY;
+
+            // Draw Tangent Line (Glowing Lime)
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = '#84cc16';
+            ctx.strokeStyle = '#a3e635';
+            ctx.lineWidth = 2.5;
+
+            const tLen = 2.5;
+            const x1 = curX - tLen;
+            const y1 = curY - slope * tLen;
+            const x2 = curX + tLen;
+            const y2 = curY + slope * tLen;
+
+            ctx.beginPath();
+            ctx.moveTo(originX + x1 * scaleX, originY - y1 * scaleY);
+            ctx.lineTo(originX + x2 * scaleX, originY - y2 * scaleY);
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Point on Curve
+            ctx.fillStyle = '#fde047';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#f59e0b';
+            ctx.beginPath();
+            ctx.arc(ptX, ptY, 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Update readout
+            valDisplay.innerHTML = `x = ${curX.toFixed(2)} | <span style="color: #a3e635;">m = ${slope.toFixed(2)}</span>`;
+        };
+
+        slider.addEventListener('input', draw);
+        window.addEventListener('resize', draw);
+        setTimeout(draw, 50);
+    }
+
+    /**
+     * Render Interactive Riemann Sum Area Accumulator (3Blue1Brown Style)
+     */
+    static renderRiemannArea(container, a = 0, b = 3, initialN = 8) {
+        if (!container) return;
+
+        container.innerHTML = `
+            <div class="manim-card" style="background: #0d1117; border: 1px solid rgba(99, 102, 241, 0.4); border-radius: 12px; padding: 1rem; color: #f8fafc; box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <div style="font-weight: 700; color: #818cf8; font-family: var(--font-heading);">
+                        <span>∫ Manim Visual Intuition: Riemann Area Accumulation (dx → 0)</span>
+                    </div>
+                    <span class="riemann-readout" style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid #6366f1; padding: 0.2rem 0.6rem; border-radius: 6px; font-family: var(--font-code); font-size: 0.85rem; font-weight: 700;">∫ f(x) dx</span>
+                </div>
+
+                <div style="position: relative; width: 100%; height: 220px;">
+                    <canvas class="riemann-canvas" style="width: 100%; height: 100%; display: block; border-radius: 8px; background: #06090e; border: 1px solid rgba(255, 255, 255, 0.08);"></canvas>
+                </div>
+
+                <div style="margin-top: 0.75rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                    <label style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">Subdivisions N (dx = Δx):</label>
+                    <input type="range" class="riemann-n-slider" min="2" max="60" step="1" value="${initialN}" style="flex: 1; accent-color: #6366f1; cursor: pointer;">
+                    <div class="riemann-val-display" style="font-family: var(--font-code); font-weight: 700; color: #f8fafc; min-width: 140px; text-align: right;"></div>
+                </div>
+            </div>
+        `;
+
+        const canvas = container.querySelector('.riemann-canvas');
+        const slider = container.querySelector('.riemann-n-slider');
+        const valDisplay = container.querySelector('.riemann-val-display');
+
+        const draw = () => {
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            ctx.fillStyle = '#06090e';
+            ctx.fillRect(0, 0, width, height);
+
+            const originX = 50;
+            const originY = height - 40;
+            const scaleX = (width - 80) / 4;
+            const scaleY = (height - 60) / 5;
+
+            // f(x) = 0.5 x^2
+            const f = (x) => 0.4 * x * x;
+
+            const N = parseInt(slider.value);
+            const dx = (b - a) / N;
+
+            let approxArea = 0;
+
+            // Draw Riemann Rectangles
+            ctx.fillStyle = 'rgba(99, 102, 241, 0.35)';
+            ctx.strokeStyle = 'rgba(165, 180, 252, 0.6)';
+            ctx.lineWidth = N > 35 ? 0.5 : 1;
+
+            for (let i = 0; i < N; i++) {
+                const xLeft = a + i * dx;
+                const hVal = f(xLeft);
+                approxArea += hVal * dx;
+
+                const rx = originX + xLeft * scaleX;
+                const ry = originY - hVal * scaleY;
+                const rw = dx * scaleX;
+                const rh = hVal * scaleY;
+
+                ctx.fillRect(rx, ry, rw, rh);
+                ctx.strokeRect(rx, ry, rw, rh);
+            }
+
+            // Draw Curve
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#6366f1';
+            ctx.strokeStyle = '#818cf8';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            let first = true;
+            for (let px = 0; px <= 3.8; px += 0.05) {
+                const py = f(px);
+                const cx = originX + px * scaleX;
+                const cy = originY - py * scaleY;
+                if (first) { ctx.moveTo(cx, cy); first = false; }
+                else { ctx.lineTo(cx, cy); }
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Exact integral of 0.4 x^2 from 0 to 3 = 0.4 * 3^3 / 3 = 3.6
+            const exactArea = 3.6;
+
+            valDisplay.innerHTML = `N = ${N} | Area ≈ <span style="color: #818cf8;">${approxArea.toFixed(3)}</span> (Exact: ${exactArea.toFixed(2)})`;
+        };
+
+        slider.addEventListener('input', draw);
+        window.addEventListener('resize', draw);
+        setTimeout(draw, 50);
+    }
+
+    /**
+     * Render SVG Venn Diagram with Glowing Highlights
+     */
+    static renderVennDiagramSVG(container, setA = ['1', '2', '3', '4'], setB = ['3', '4', '5', '6'], operation = 'union') {
+        if (!container) return;
+
+        const aOnly = setA.filter(x => !setB.includes(x));
+        const bOnly = setB.filter(x => !setA.includes(x));
+        const both = setA.filter(x => setB.includes(x));
+
+        let highlightA = operation === 'union' || operation === 'difference' || operation === 'symmetric_difference';
+        let highlightB = operation === 'union' || operation === 'symmetric_difference';
+        let highlightBoth = operation === 'union' || operation === 'intersection';
+
+        if (operation === 'difference') {
+            highlightA = true;
+            highlightBoth = false;
+            highlightB = false;
+        }
+
+        container.innerHTML = `
+            <div class="manim-card" style="background: #0d1117; border: 1px solid rgba(2, 132, 199, 0.4); border-radius: 12px; padding: 1rem; color: #f8fafc;">
+                <div style="font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem; font-family: var(--font-heading);">
+                    📐 Interactive Venn Diagram Graphic
+                </div>
+
+                <svg viewBox="0 0 400 200" style="width: 100%; height: 180px; filter: drop-shadow(0 0 8px rgba(2, 132, 199, 0.3));">
+                    <!-- Circle A -->
+                    <circle cx="150" cy="100" r="70" 
+                            fill="${highlightA ? 'rgba(6, 182, 212, 0.35)' : 'rgba(255,255,255,0.05)'}" 
+                            stroke="#06b6d4" stroke-width="3" />
+
+                    <!-- Circle B -->
+                    <circle cx="250" cy="100" r="70" 
+                            fill="${highlightB ? 'rgba(168, 85, 247, 0.35)' : 'rgba(255,255,255,0.05)'}" 
+                            stroke="#a855f7" stroke-width="3" />
+
+                    <!-- Labels -->
+                    <text x="110" y="50" fill="#38bdf8" font-weight="700" font-size="16">Set A</text>
+                    <text x="260" y="50" fill="#c084fc" font-weight="700" font-size="16">Set B</text>
+
+                    <!-- Elements in A Only -->
+                    <text x="115" y="105" fill="#f8fafc" font-weight="600" font-size="14" text-anchor="middle">{ ${aOnly.join(', ')} }</text>
+
+                    <!-- Shared Elements A ∩ B -->
+                    <text x="200" y="105" fill="${highlightBoth ? '#fde047' : '#94a3b8'}" font-weight="700" font-size="14" text-anchor="middle">{ ${both.join(', ')} }</text>
+
+                    <!-- Elements in B Only -->
+                    <text x="285" y="105" fill="#f8fafc" font-weight="600" font-size="14" text-anchor="middle">{ ${bOnly.join(', ')} }</text>
+                </svg>
+            </div>
+        `;
+    }
+
+    /**
+     * Render SVG Vector Mapping Graph (Domain -> Codomain Arrow Network)
+     */
+    static renderMappingGraphSVG(container, domain = ['1', '2', '3'], codomain = ['A', 'B', 'C', 'D'], mapping = { '1': 'A', '2': 'B', '3': 'C' }) {
+        if (!container) return;
+
+        let svgHtml = `
+            <div class="manim-card" style="background: #0d1117; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 12px; padding: 1rem; color: #f8fafc;">
+                <div style="font-weight: 700; color: #c084fc; margin-bottom: 0.5rem; font-family: var(--font-heading);">
+                    🔄 Vector Arrow Mapping Network (f: X → Y)
+                </div>
+
+                <svg viewBox="0 0 400 220" style="width: 100%; height: 200px;">
+                    <defs>
+                        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a855f7" />
+                        </marker>
+                    </defs>
+
+                    <!-- Domain Oval -->
+                    <rect x="30" y="20" width="100" height="180" rx="30" fill="rgba(6, 182, 212, 0.08)" stroke="#06b6d4" stroke-width="2" />
+                    <text x="80" y="42" fill="#38bdf8" font-weight="700" font-size="14" text-anchor="middle">Domain X</text>
+
+                    <!-- Codomain Oval -->
+                    <rect x="270" y="20" width="100" height="180" rx="30" fill="rgba(168, 85, 247, 0.08)" stroke="#a855f7" stroke-width="2" />
+                    <text x="320" y="42" fill="#c084fc" font-weight="700" font-size="14" text-anchor="middle">Codomain Y</text>
+        `;
+
+        // Domain nodes
+        const domStep = 130 / (domain.length || 1);
+        const domCoords = {};
+        domain.forEach((d, idx) => {
+            const y = 70 + idx * domStep;
+            domCoords[d] = { x: 100, y };
+            svgHtml += `
+                <circle cx="100" cy="${y}" r="14" fill="#090d16" stroke="#38bdf8" stroke-width="2" />
+                <text x="100" y="${y + 5}" fill="#f8fafc" font-weight="700" font-size="13" text-anchor="middle">${d}</text>
+            `;
+        });
+
+        // Codomain nodes
+        const codStep = 130 / (codomain.length || 1);
+        const codCoords = {};
+        codomain.forEach((c, idx) => {
+            const y = 70 + idx * codStep;
+            codCoords[c] = { x: 270, y };
+            svgHtml += `
+                <circle cx="270" cy="${y}" r="14" fill="#090d16" stroke="#c084fc" stroke-width="2" />
+                <text x="270" y="${y + 5}" fill="#f8fafc" font-weight="700" font-size="13" text-anchor="middle">${c}</text>
+            `;
+        });
+
+        // Arrows
+        Object.entries(mapping).forEach(([domVal, codVal]) => {
+            const src = domCoords[domVal];
+            const tgt = codCoords[codVal];
+            if (src && tgt) {
+                svgHtml += `
+                    <line x1="${src.x + 14}" y1="${src.y}" x2="${tgt.x - 14}" y2="${tgt.y}" 
+                          stroke="#a855f7" stroke-width="2.5" marker-end="url(#arrow)" />
+                `;
+            }
+        });
+
+        svgHtml += `</svg></div>`;
+        container.innerHTML = svgHtml;
+    }
+}
+
 /* --- MODULE: sandbox.js --- */
 class SandboxView {
     static init(containerEl) {
@@ -3711,6 +4121,8 @@ class SandboxView {
                     <button class="btn btn-primary" id="btn-eval-set" style="margin-top: 1rem;">Compute Set Operation</button>
                 </div>
 
+                <div id="set-graphics-container" style="margin-top: 1rem;"></div>
+
                 <div id="set-results" class="results-card hidden">
                     <div id="set-status-box"></div>
                 </div>
@@ -3731,6 +4143,8 @@ class SandboxView {
                     <button class="btn btn-primary" id="btn-eval-fn" style="margin-top: 1rem;">Analyze Function Properties</button>
                 </div>
 
+                <div id="fn-graphics-container" style="margin-top: 1rem;"></div>
+
                 <div id="fn-results" class="results-card hidden">
                     <div id="fn-status-box"></div>
                 </div>
@@ -3739,44 +4153,16 @@ class SandboxView {
             <!-- CALCULUS & RATES VISUALIZER TOOL -->
             <div class="sandbox-panel" id="calculus-tool">
                 <div class="input-card">
-                    <label>Polynomial Term <code>c · xⁿ</code> (Enter Coefficient c and Exponent n):</label>
-                    <div style="display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap;">
-                        <div style="flex: 1; min-width: 120px;">
-                            <label style="font-size: 0.85rem;">Coefficient (c):</label>
-                            <input type="number" id="calc-coef" value="3" step="any">
-                        </div>
-                        <div style="flex: 1; min-width: 120px;">
-                            <label style="font-size: 0.85rem;">Exponent (n):</label>
-                            <input type="number" id="calc-power" value="2" step="any">
-                        </div>
-                    </div>
-
-                    <label style="margin-top: 1rem;">Select Calculus Analysis:</label>
+                    <label>Select Calculus Manim Graphic Mode:</label>
                     <select id="calc-mode-select" class="form-select">
-                        <option value="derivative">Power Rule Derivative: d/dx [c · xⁿ]</option>
-                        <option value="limit">Limit at Point: lim_{x → a} (c · xⁿ)</option>
-                        <option value="integral">Definite Integral Area: ∫ₐᵇ (c · xⁿ) dx</option>
+                        <option value="derivative">Tangent Line & Slope f'(x) (Manim Graphic)</option>
+                        <option value="integral">Riemann Sum Area Accumulation (dx → 0)</option>
                     </select>
 
-                    <div id="calc-extra-params" style="margin-top: 1rem;">
-                        <div id="calc-param-point">
-                            <label style="font-size: 0.85rem;">Target Point (a):</label>
-                            <input type="number" id="calc-target-x" value="4" step="any">
-                        </div>
-                        <div id="calc-param-bounds" class="hidden" style="display: flex; gap: 1rem;">
-                            <div style="flex: 1;">
-                                <label style="font-size: 0.85rem;">Lower Bound (a):</label>
-                                <input type="number" id="calc-bound-a" value="0" step="any">
-                            </div>
-                            <div style="flex: 1;">
-                                <label style="font-size: 0.85rem;">Upper Bound (b):</label>
-                                <input type="number" id="calc-bound-b" value="3" step="any">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary" id="btn-eval-calc" style="margin-top: 1rem;">Compute Calculus Result</button>
+                    <button class="btn btn-primary" id="btn-eval-calc" style="margin-top: 1rem;">Render Manim Visualizer</button>
                 </div>
+
+                <div id="calc-graphics-container" style="margin-top: 1.5rem;"></div>
 
                 <div id="calc-results" class="results-card hidden">
                     <div id="calc-status-box"></div>
@@ -3834,36 +4220,18 @@ class SandboxView {
         // Set Theory Visualizer
         const setBtn = containerEl.querySelector('#btn-eval-set');
         setBtn.addEventListener('click', () => this.runSetEval(containerEl));
+        this.runSetEval(containerEl);
 
         // Function Mapping Inspector
         const fnBtn = containerEl.querySelector('#btn-eval-fn');
         fnBtn.addEventListener('click', () => this.runFunctionEval(containerEl));
-
-        // Calculus Visualizer Mode Switch
-        const calcModeSelect = containerEl.querySelector('#calc-mode-select');
-        const paramPoint = containerEl.querySelector('#calc-param-point');
-        const paramBounds = containerEl.querySelector('#calc-param-bounds');
-
-        if (calcModeSelect) {
-            calcModeSelect.addEventListener('change', () => {
-                const mode = calcModeSelect.value;
-                if (mode === 'integral') {
-                    paramPoint.classList.add('hidden');
-                    paramBounds.classList.remove('hidden');
-                } else if (mode === 'limit') {
-                    paramPoint.classList.remove('hidden');
-                    paramBounds.classList.add('hidden');
-                } else {
-                    paramPoint.classList.add('hidden');
-                    paramBounds.classList.add('hidden');
-                }
-            });
-        }
+        this.runFunctionEval(containerEl);
 
         // Calculus Visualizer Compute
         const calcBtn = containerEl.querySelector('#btn-eval-calc');
         if (calcBtn) {
             calcBtn.addEventListener('click', () => this.runCalculusEval(containerEl));
+            this.runCalculusEval(containerEl);
         }
     }
 
@@ -3974,6 +4342,7 @@ class SandboxView {
         const strA = containerEl.querySelector('#set-input-a').value.trim();
         const strB = containerEl.querySelector('#set-input-b').value.trim();
         const op = containerEl.querySelector('#set-op-select').value;
+        const graphicsContainer = containerEl.querySelector('#set-graphics-container');
         const resultsCard = containerEl.querySelector('#set-results');
         const statusBox = containerEl.querySelector('#set-status-box');
 
@@ -3984,6 +4353,8 @@ class SandboxView {
             const resultSet = Evaluator.evaluateSetOperation(op, setA, setB);
             resultsCard.classList.remove('hidden');
 
+            VisualIntuitionEngine.renderVennDiagramSVG(graphicsContainer, setA, setB, op);
+
             const opNames = {
                 union: 'A ∪ B (Union)',
                 intersection: 'A ∩ B (Intersection)',
@@ -3991,19 +4362,10 @@ class SandboxView {
                 symmetric_difference: 'A Δ B (Symmetric Difference)'
             };
 
-            const aOnly = setA.filter(x => !setB.includes(x));
-            const bOnly = setB.filter(x => !setA.includes(x));
-            const both = setA.filter(x => setB.includes(x));
-
             statusBox.className = 'status-box status-success';
             statusBox.innerHTML = `
                 <h3>Result for ${opNames[op] || op}</h3>
                 <p class="set-result-formula">Resulting Set: <code>{ ${resultSet.join(', ')} }</code> (Cardinality = ${resultSet.length})</p>
-                <div class="venn-breakdown" style="margin-top: 1rem; font-size: 0.9rem;">
-                    <div><strong>A Only ({ ${aOnly.join(', ')} })</strong></div>
-                    <div><strong>Shared A ∩ B ({ ${both.join(', ')} })</strong></div>
-                    <div><strong>B Only ({ ${bOnly.join(', ')} })</strong></div>
-                </div>
             `;
         } catch (err) {
             resultsCard.classList.remove('hidden');
@@ -4016,6 +4378,7 @@ class SandboxView {
         const strDomain = containerEl.querySelector('#fn-domain-input').value.trim();
         const strCodomain = containerEl.querySelector('#fn-codomain-input').value.trim();
         const strMapping = containerEl.querySelector('#fn-mapping-input').value.trim();
+        const graphicsContainer = containerEl.querySelector('#fn-graphics-container');
         const resultsCard = containerEl.querySelector('#fn-results');
         const statusBox = containerEl.querySelector('#fn-status-box');
 
@@ -4037,6 +4400,8 @@ class SandboxView {
             const res = Evaluator.checkFunctionProperties(domain, codomain, mapping);
             resultsCard.classList.remove('hidden');
 
+            VisualIntuitionEngine.renderMappingGraphSVG(graphicsContainer, domain, codomain, mapping);
+
             statusBox.className = 'status-box status-success';
             statusBox.innerHTML = `
                 <h3>Function Analysis Results</h3>
@@ -4056,47 +4421,16 @@ class SandboxView {
     }
 
     static runCalculusEval(containerEl) {
-        const coef = parseFloat(containerEl.querySelector('#calc-coef').value) || 0;
-        const power = parseFloat(containerEl.querySelector('#calc-power').value) || 0;
-        const mode = containerEl.querySelector('#calc-mode-select').value;
-        const resultsCard = containerEl.querySelector('#calc-results');
-        const statusBox = containerEl.querySelector('#calc-status-box');
+        const modeSelect = containerEl.querySelector('#calc-mode-select');
+        const mode = modeSelect ? modeSelect.value : 'derivative';
+        const graphicsContainer = containerEl.querySelector('#calc-graphics-container');
 
-        try {
-            resultsCard.classList.remove('hidden');
-            statusBox.className = 'status-box status-success';
+        if (!graphicsContainer) return;
 
-            if (mode === 'derivative') {
-                const res = Evaluator.evaluatePowerRuleDerivative(coef, power);
-                const formulaStr = `${coef}x^${power}`;
-                const derivStr = `${res.coef}x^${res.power}`;
-                statusBox.innerHTML = `
-                    <h3>📈 Power Rule Derivative</h3>
-                    <p>Function: <code>f(x) = ${formulaStr}</code></p>
-                    <p style="margin-top: 0.5rem; font-size: 1.1rem; color: #84cc16;">Derivative: <code>f'(x) = ${derivStr}</code></p>
-                `;
-            } else if (mode === 'limit') {
-                const targetX = parseFloat(containerEl.querySelector('#calc-target-x').value) || 0;
-                const limitVal = Evaluator.evaluatePolynomialLimit(coef, power, targetX);
-                statusBox.innerHTML = `
-                    <h3>🌌 Limit Evaluation</h3>
-                    <p>Formula: <code>lim_{x → ${targetX}} (${coef}x^${power})</code></p>
-                    <p style="margin-top: 0.5rem; font-size: 1.1rem; color: #f59e0b;">Limit Value L = <strong>${limitVal}</strong></p>
-                `;
-            } else if (mode === 'integral') {
-                const a = parseFloat(containerEl.querySelector('#calc-bound-a').value) || 0;
-                const b = parseFloat(containerEl.querySelector('#calc-bound-b').value) || 0;
-                const areaVal = Evaluator.evaluateDefiniteIntegralPowerRule(coef, power, a, b);
-                statusBox.innerHTML = `
-                    <h3>∫ Definite Integral (Net Area)</h3>
-                    <p>Integral: <code>∫_{${a}}^{${b}} (${coef}x^${power}) dx</code></p>
-                    <p style="margin-top: 0.5rem; font-size: 1.1rem; color: #6366f1;">Net Area = <strong>${areaVal.toFixed(4)}</strong></p>
-                `;
-            }
-        } catch (err) {
-            resultsCard.classList.remove('hidden');
-            statusBox.className = 'status-box status-danger';
-            statusBox.innerHTML = `<p>⚠️ ${this.escapeHTML(err.message)}</p>`;
+        if (mode === 'integral') {
+            VisualIntuitionEngine.renderRiemannArea(graphicsContainer, 0, 3, 8);
+        } else {
+            VisualIntuitionEngine.renderTangentGraph(graphicsContainer, 'x_squared', 1.5);
         }
     }
 }
@@ -4347,6 +4681,12 @@ class LogicLairApp {
             `;
         }
 
+        // Add Manim Visual Intuition Container if applicable
+        const hasVisualGraphic = ['cat_limits', 'cat_derivatives', 'cat_integrals', 'cat_set_theory', 'cat_functions'].includes(ch.categoryId);
+        if (hasVisualGraphic) {
+            contentHtml += `<div id="ch-visual-intuition-container" style="margin: 1rem 0;"></div>`;
+        }
+
         contentHtml += `<p class="challenge-prompt" style="font-size: 1.1rem; font-weight: 600; margin: 1rem 0;">${ch.prompt}</p>`;
 
         if (ch.formula) {
@@ -4392,6 +4732,22 @@ class LogicLairApp {
         </div>`;
 
         containerEl.innerHTML = contentHtml;
+
+        // Render Visual Intuition Graphic
+        if (hasVisualGraphic) {
+            const visualBox = containerEl.querySelector('#ch-visual-intuition-container');
+            if (visualBox) {
+                if (ch.categoryId === 'cat_limits' || ch.categoryId === 'cat_derivatives') {
+                    VisualIntuitionEngine.renderTangentGraph(visualBox, 'x_squared', 1.5);
+                } else if (ch.categoryId === 'cat_integrals') {
+                    VisualIntuitionEngine.renderRiemannArea(visualBox, 0, 3, 8);
+                } else if (ch.categoryId === 'cat_set_theory') {
+                    VisualIntuitionEngine.renderVennDiagramSVG(visualBox, ['1', '2', '3', '4'], ['3', '4', '5', '6'], 'intersection');
+                } else if (ch.categoryId === 'cat_functions') {
+                    VisualIntuitionEngine.renderMappingGraphSVG(visualBox, ['1', '2', '3'], ['A', 'B', 'C', 'D'], { '1': 'A', '2': 'B', '3': 'C' });
+                }
+            }
+        }
 
         // Attach On-Screen Keyboard if applicable
         if (ch.type === 'equivalence_input') {

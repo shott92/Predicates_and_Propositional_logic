@@ -130,11 +130,13 @@ def main():
 </html>
 """
 
-    index_html_path = os.path.join(root_dir, 'index.html')
-    prop_html_path = os.path.join(root_dir, 'PropNPredsLogicLair.html')
-    prop_file_path = os.path.join(root_dir, 'PropNPredsLogicLair')
+    targets = [
+        os.path.join(root_dir, 'index.html'),
+        os.path.join(root_dir, 'OmniMathRealm.html'),
+        os.path.join(root_dir, 'OmniMathRealm'),
+    ]
 
-    for target in [index_html_path, prop_html_path, prop_file_path]:
+    for target in targets:
         with open(target, 'w', encoding='utf-8') as f:
             f.write(html_template)
         print(f"Successfully generated: {target} ({len(html_template)} bytes)")

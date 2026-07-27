@@ -6,12 +6,12 @@ An interactive, zero-dependency, hyper-optimised **eLearning web application** f
 
 ## 📱 Portable & Zero-Prerequisite Execution
 
-This application operates **100% offline in a single self-contained HTML file** (`index.html` or `PropNPredsLogicLair.html`).
+This application operates **100% offline in a single self-contained HTML file** (`index.html` or `OmniMathRealm.html`).
 
 ### How to Run on Any Device (Android, iOS, Windows, Mac, Linux):
 1. **No Installation, No Node.js, No Server Required!**
 2. **On Mobile (Android / iOS)**:
-   - Save or receive `PropNPredsLogicLair.html` / `index.html` via WhatsApp, Email, or direct download.
+   - Save or receive `OmniMathRealm.html` / `index.html` via WhatsApp, Email, or direct download.
    - Tap to open directly in Chrome, Safari, Firefox, or Samsung Internet.
 3. **On Desktop (Windows / Mac / Linux)**:
    - Double-click `index.html` or drag it into any web browser.
